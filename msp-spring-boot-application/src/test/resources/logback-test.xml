@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+   <appender name="CONSOLE_LOGSTASH" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+   </appender>
+
+   <appender name="CONSOLE_MDC" class="ch.qos.logback.core.ConsoleAppender">
+      <layout>
+         <Pattern>correlationId: %X{correlationId}, sessionId: %X{sessionId}, hostname: ${HOSTNAME} - %msg</Pattern>
+      </layout>
+   </appender>
+
+   <logger name="com.stano.spring_boot_application.logging.logstash" level="debug">
+      <appender-ref ref="CONSOLE_LOGSTASH"/>
+   </logger>
+
+   <logger name="com.stano.spring_boot_application.logging.mdc" level="debug">
+      <appender-ref ref="CONSOLE_MDC"/>
+   </logger>
+
+   <root>
+      <level value="OFF"/>
+   </root>
+</configuration>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database xmlns="http://stano.com/database"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://stano.com/database http://stano.com/database"
+          version="1.2">
+  <table name="data_source">
+    <columns>
+      <column name="id" type="uuid" required="true"/>
+      <column name="name" type="text" required="true"/>
+      <column name="jdbc_url" type="text" required="true"/>
+      <column name="username" type="text" required="true"/>
+      <column name="password" type="text" required="true"/>
+    </columns>
+    <keys>
+      <primary>
+        <column name="id"/>
+      </primary>
+      <unique>
+        <column name="name"/>
+      </unique>
+    </keys>
+  </table>
+
+  <table name="company_data_source">
+    <columns>
+      <column name="company_id" type="long" required="true"/>
+      <column name="data_source_id" type="uuid" required="true"/>
+    </columns>
+    <keys>
+      <primary>
+        <column name="company_id"/>
+      </primary>
+    </keys>
+    <relations>
+      <relation src="data_source_id" table="data_source" column="id" type="enforce"/>
+    </relations>
+  </table>
+</database>

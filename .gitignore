@@ -1,0 +1,14 @@
+.DS_Store
+.idea/
+.gradle/
+build/
+out/
+!.gitkeep
+
+### Eclipse ###
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+bin/

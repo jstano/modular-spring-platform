@@ -1,0 +1,2 @@
+com.stano.spring_boot_application.SpringApplicationAutoConfiguration
+com.stano.spring_boot_application.JacksonConfiguration
