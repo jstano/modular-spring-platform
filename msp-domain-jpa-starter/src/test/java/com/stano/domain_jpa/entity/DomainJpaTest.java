@@ -38,6 +38,11 @@ class DomainJpaTest {
     assertThat(found.getUrl()).isEqualTo(entity.getUrl());
     assertThat(found.getDecimal()).isEqualByComparingTo(entity.getDecimal());
     assertThat(found.isActive()).isEqualTo(entity.isActive());
+    assertThat(found.getEncryptedBytes()).isEqualTo(entity.getEncryptedBytes());
+    assertThat(found.getEncryptedText()).isEqualTo(entity.getEncryptedText());
+    assertThat(found.getPassword()).isEqualTo(entity.getPassword());
+    assertThat(found.getEncryptedString()).isEqualTo(entity.getEncryptedString());
+    assertThat(found.getCurrency()).isEqualTo(entity.getCurrency());
     assertThat(found.getCreatedAt()).isNotNull();
     assertThat(found.getUpdatedAt()).isNotNull();
     assertThat(found.getVersion()).isZero();
@@ -62,6 +67,11 @@ class DomainJpaTest {
     loaded.setUrl(updated.getUrl());
     loaded.setDecimal(updated.getDecimal());
     loaded.setActive(updated.isActive());
+    loaded.setEncryptedBytes(updated.getEncryptedBytes());
+    loaded.setEncryptedText(updated.getEncryptedText());
+    loaded.setPassword(updated.getPassword());
+    loaded.setEncryptedString(updated.getEncryptedString());
+    loaded.setCurrency(updated.getCurrency());
     entityManager.flush();
     entityManager.clear();
 
@@ -76,6 +86,11 @@ class DomainJpaTest {
     assertThat(found.getUrl()).isEqualTo(updated.getUrl());
     assertThat(found.getDecimal()).isEqualByComparingTo(updated.getDecimal());
     assertThat(found.isActive()).isEqualTo(updated.isActive());
+    assertThat(found.getEncryptedBytes()).isEqualTo(updated.getEncryptedBytes());
+    assertThat(found.getEncryptedText()).isEqualTo(updated.getEncryptedText());
+    assertThat(found.getPassword()).isEqualTo(updated.getPassword());
+    assertThat(found.getEncryptedString()).isEqualTo(updated.getEncryptedString());
+    assertThat(found.getCurrency()).isEqualTo(updated.getCurrency());
   }
 
   @Test

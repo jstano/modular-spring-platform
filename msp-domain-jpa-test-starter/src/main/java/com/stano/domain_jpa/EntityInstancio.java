@@ -1,13 +1,19 @@
 package com.stano.domain_jpa;
 
+import com.stano.crypto.binary.EncryptedBytes;
+import com.stano.crypto.binary.EncryptedBytesFactory;
+import com.stano.crypto.password.Password;
+import com.stano.crypto.password.PasswordFactory;
+import com.stano.crypto.text.EncryptedText;
+import com.stano.crypto.text.EncryptedTextFactory;
 import com.stano.domain_jpa.entity.AbstractEntity;
 import org.instancio.Instancio;
 import org.instancio.InstancioApi;
 import org.instancio.Select;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Currency;
 
 public class EntityInstancio {
   public static <T extends AbstractEntity<?>> InstancioApi<T> of(Class<T> type) {
@@ -28,6 +34,14 @@ public class EntityInstancio {
         random.intRange(0, 23),
         random.intRange(0, 59),
         random.intRange(0, 59)
-      ));
+      ))
+      .supply(Select.all(EncryptedBytes.class), random ->
+        EncryptedBytesFactory.getInstance().withClearBytes(random.alphanumeric(16).getBytes()))
+      .supply(Select.all(EncryptedText.class), random ->
+        EncryptedTextFactory.getInstance().withClearText(random.alphanumeric(16)))
+      .supply(Select.all(Password.class), random ->
+        PasswordFactory.getInstance().withClearText(random.alphanumeric(16)))
+      .supply(Select.all(Currency.class), random ->
+        Currency.getInstance("USD"));
   }
 }

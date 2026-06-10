@@ -1,6 +1,11 @@
 package com.stano.domain_jpa.entity;
 
+import com.stano.crypto.binary.EncryptedBytes;
+import com.stano.crypto.password.Password;
+import com.stano.crypto.text.EncryptedText;
+import com.stano.domain_jpa.jpa.converters.EncryptedStringConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 
 import java.math.BigDecimal;
@@ -10,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -26,6 +32,12 @@ public class TestEntity extends AbstractEntity<TestEntityId> {
   @Column(precision = 19, scale = 4)
   private BigDecimal decimal;
   private boolean active;
+  private EncryptedBytes encryptedBytes;
+  private EncryptedText encryptedText;
+  private Password password;
+  @Convert(converter = EncryptedStringConverter.class)
+  private String encryptedString;
+  private Currency currency;
 
   public TestEntity() {}
 
@@ -111,6 +123,46 @@ public class TestEntity extends AbstractEntity<TestEntityId> {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public EncryptedBytes getEncryptedBytes() {
+    return encryptedBytes;
+  }
+
+  public void setEncryptedBytes(EncryptedBytes encryptedBytes) {
+    this.encryptedBytes = encryptedBytes;
+  }
+
+  public EncryptedText getEncryptedText() {
+    return encryptedText;
+  }
+
+  public void setEncryptedText(EncryptedText encryptedText) {
+    this.encryptedText = encryptedText;
+  }
+
+  public Password getPassword() {
+    return password;
+  }
+
+  public void setPassword(Password password) {
+    this.password = password;
+  }
+
+  public String getEncryptedString() {
+    return encryptedString;
+  }
+
+  public void setEncryptedString(String encryptedString) {
+    this.encryptedString = encryptedString;
+  }
+
+  public Currency getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(Currency currency) {
+    this.currency = currency;
   }
 
   @Override

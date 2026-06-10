@@ -15,6 +15,7 @@ dependencies {
   api("org.springframework:spring-jdbc")
   api("org.springframework:spring-orm")
   api("org.springframework:spring-tx")
+  api("com.stano:schema-installer-flyway")
 
   implementation(project(":msp-jackson"))
   implementation(project(":msp-util"))

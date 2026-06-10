@@ -4,7 +4,7 @@ import com.stano.crypto.text.TextEncryptionServicesFactory;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-@Converter(autoApply = true)
+@Converter
 public class EncryptedStringConverter implements AttributeConverter<String, String> {
   @Override
   public String convertToDatabaseColumn(String attribute) {
