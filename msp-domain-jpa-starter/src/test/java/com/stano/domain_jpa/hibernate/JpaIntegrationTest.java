@@ -20,7 +20,7 @@ class JpaIntegrationTest {
         var entityManager = HibernateUtil.getEntityManager();
         var session = entityManager.unwrap(Session.class);
 
-        var testEntity = new TestEntity();
+        var testEntity = new TestEntity2();
         testEntity.setBirthDate(LocalDate.of(2014, 1, 1));
         testEntity.setBirthDateTime(LocalDateTime.of(2014, 1, 1, 8, 30, 45));
         testEntity.setBirthTime(LocalTime.of(8, 30, 45));
@@ -38,7 +38,7 @@ class JpaIntegrationTest {
             return null;
         });
 
-        TestEntity result = (TestEntity) doInTransaction(entityManager, () -> entityManager.find(TestEntity.class, testEntity.getId()));
+        TestEntity2 result = (TestEntity2) doInTransaction(entityManager, () -> entityManager.find(TestEntity2.class, testEntity.getId()));
 
         assertThat(result.getId()).isEqualTo(testEntity.getId());
         assertThat(result.getBirthDate()).isEqualTo(testEntity.getBirthDate());
@@ -51,7 +51,7 @@ class JpaIntegrationTest {
         assertThat(result.getDecimal()).isEqualTo(new java.math.BigDecimal("12345.6789"));
         assertThat(result.isActive()).isTrue();
 
-        assertThat(entityManager.createNativeQuery("select active from TestEntity").getSingleResult()).isEqualTo(true);
+        assertThat(entityManager.createNativeQuery("select active from TestEntity2").getSingleResult()).isEqualTo(true);
 
         doInTransaction(entityManager, () -> {
             entityManager.remove(result);
@@ -67,8 +67,8 @@ class JpaIntegrationTest {
 
         createSimpleEntity(entityManager);
 
-        var result = (TestEntity) doInTransaction(entityManager, () -> {
-            return entityManager.createQuery("select t from TestEntity t where active = :active")
+        var result = (TestEntity2) doInTransaction(entityManager, () -> {
+            return entityManager.createQuery("select t from TestEntity2 t where active = :active")
                 .setParameter("active", true)
                 .getSingleResult();
         });
@@ -86,7 +86,7 @@ class JpaIntegrationTest {
     }
 
     private void createSimpleEntity(EntityManager entityManager) {
-        var testEntity = new TestEntity();
+        var testEntity = new TestEntity2();
         testEntity.setActive(true);
 
         doInTransaction(entityManager, () -> {

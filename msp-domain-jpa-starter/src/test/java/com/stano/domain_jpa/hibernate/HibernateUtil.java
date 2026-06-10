@@ -21,7 +21,7 @@ public class HibernateUtil {
                                          .build();
 
     MetadataSources metadataSources = new MetadataSources(registry)
-                                        .addAnnotatedClass(TestEntity.class);
+                                        .addAnnotatedClass(TestEntity2.class);
 
     entityManagerFactory = metadataSources.getMetadataBuilder()
                                           .build()

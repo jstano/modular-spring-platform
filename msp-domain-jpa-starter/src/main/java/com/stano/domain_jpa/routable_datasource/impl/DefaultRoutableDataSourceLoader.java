@@ -2,32 +2,33 @@ package com.stano.domain_jpa.routable_datasource.impl;
 
 import com.stano.domain_jpa.routable_datasource.RoutableDataSources;
 import com.stano.domain_jpa.routable_datasource.RoutableDataSourcesLoader;
-import com.stano.domain_jpa.springjdbc.hikari.HikariDataSourceFactory;
-import com.stano.domain_jpa.springjdbc.sql.Sql;
+import com.stano.domain_jpa.datasource.DataSourceFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.DataClassRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.stream.Collectors;
 
 public class DefaultRoutableDataSourceLoader implements RoutableDataSourcesLoader<Long> {
   private final Environment environment;
-  private final Sql sql;
+  private final JdbcTemplate jdbcTemplate;
 
   public DefaultRoutableDataSourceLoader(Environment environment,
-                                         Sql sql) {
+                                         JdbcTemplate jdbcTemplate) {
     this.environment = environment;
-    this.sql = sql;
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override
   public RoutableDataSources<Long, DataSource> loadDataSources() {
-    return new RoutableDataSources<Long, DataSource>(sql.query("select * from data_source", DataSourceConfig.class)
-                                      .getResultList()
-                                      .stream()
-                                      .collect(Collectors.toMap(DataSourceConfig::id,
-                                                                it -> HikariDataSourceFactory.createDataSource(environment,
-                                                                                                               it.jdbcUrl(),
-                                                                                                               it.username(),
-                                                                                                               it.password()))));
+    return new RoutableDataSources<>(
+      jdbcTemplate.query("select * from data_source", new DataClassRowMapper<>(DataSourceConfig.class))
+                  .stream()
+                  .collect(Collectors.toMap(DataSourceConfig::id,
+                                            it -> DataSourceFactory.createDataSource(environment,
+                                                                                     it.jdbcUrl(),
+                                                                                     it.username(),
+                                                                                     it.password()))));
   }
 }

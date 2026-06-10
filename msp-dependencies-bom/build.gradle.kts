@@ -28,6 +28,7 @@ dependencies {
 
     // misc 3rd party
     api("com.damnhandy:handy-uri-templates:2.1.8")
+    api("com.github.f4b6a3:uuid-creator:6.1.1")
     api("com.google.guava:guava:33.6.0-jre")
     api("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20260313.1")
     api("com.javadocmd:simplelatlng:1.4.0")

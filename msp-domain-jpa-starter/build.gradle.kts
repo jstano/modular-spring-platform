@@ -17,13 +17,15 @@ dependencies {
   api("org.springframework:spring-tx")
 
   implementation(project(":msp-jackson"))
+  implementation(project(":msp-util"))
 
   implementation("com.zaxxer:HikariCP")
   implementation("io.micrometer:micrometer-registry-prometheus")
   implementation("org.glassfish.expressly:expressly")
   implementation("org.hibernate.orm:hibernate-micrometer")
-  implementation("org.springframework:spring-webmvc")
+  compileOnly("org.springframework:spring-webmvc")
 
-  testImplementation(project(":msp-test-starter"))
+  testImplementation(project(":msp-spring-test-starter"))
+  testImplementation(project(":msp-domain-jpa-test-starter"))
   testImplementation("com.h2database:h2")
 }

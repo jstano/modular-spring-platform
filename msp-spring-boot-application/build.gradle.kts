@@ -1,8 +1,9 @@
 dependencies {
-  implementation(project(":msp-jackson"))
-  implementation(project(":msp-logging"))
+  api("org.springframework.boot:spring-boot-starter")
 
-  implementation("org.springframework.boot:spring-boot-starter")
+  api(project(":msp-jackson"))
+  api(project(":msp-logging"))
+
   implementation("org.springframework.boot:spring-boot-starter-tomcat")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
