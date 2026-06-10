@@ -2,11 +2,14 @@ package com.stano.domain_jpa;
 
 import com.stano.domain_jpa.datasource.DataSourceFactory;
 import com.stano.domain_jpa.jpa.hibernate.TraceIdStatementInspector;
+import com.stano.domain_jpa.schema.SchemaManager;
 import com.stano.domain_jpa.springdata.RoutingRepositoryFactoryBean;
+import com.stano.schema.installer.schemacontext.SchemaContext;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -55,8 +58,16 @@ public class DefaultJpaSpringConfig implements ImportAware {
   }
 
   @Bean
-  public DataSource dataSource(ApplicationContext applicationContext) {
+  public DataSource dataSource(ApplicationContext applicationContext,
+                               ObjectProvider<SchemaContext> schemaContextProvider) {
     DataSource dataSource = createDataSource(applicationContext);
+
+    SchemaContext schemaContext = schemaContextProvider.getIfAvailable();
+    if (schemaContext != null) {
+      boolean autoMigrate = applicationContext.getEnvironment()
+          .getProperty("spring.jpa.schema.auto-migrate", Boolean.class, false);
+      new SchemaManager().installOrMigrate(dataSource, schemaContext, autoMigrate);
+    }
 
     initializeDataSource(dataSource);
     dataSourceReady(dataSource);

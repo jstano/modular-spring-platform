@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * DataSource implementation that holds a Connection object. This is useful when a DataSource is needed, i.e. in the JdbcTemplate constructor
  * but when you don't want to use a real DataSource, but simply wrap a DataSource around a Connection object.
  */
-public class ConnectionDataSource implements DataSource {
+public class ConnectionDataSource implements DataSource, AutoCloseable {
   private final Connection connection;
 
   private PrintWriter logWriter = new PrintWriter(NullWriter.INSTANCE);
@@ -64,5 +64,10 @@ public class ConnectionDataSource implements DataSource {
   @Override
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
     throw new SQLFeatureNotSupportedException("getParentLogger not supported");
+  }
+
+  @Override
+  public void close() throws SQLException {
+    connection.close();
   }
 }

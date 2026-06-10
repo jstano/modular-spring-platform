@@ -2,6 +2,8 @@ dependencies {
   api(project(":msp-crypto"))
   api(project(":msp-types"))
 
+  compileOnly(project(":msp-spring-boot-application"))
+
   api("io.hypersistence:hypersistence-utils-hibernate-70")
   api("jakarta.interceptor:jakarta.interceptor-api")
   api("jakarta.transaction:jakarta.transaction-api")
@@ -16,6 +18,7 @@ dependencies {
   api("org.springframework:spring-orm")
   api("org.springframework:spring-tx")
   api("com.stano:schema-installer-flyway")
+  api("org.flywaydb:flyway-core")
 
   implementation(project(":msp-jackson"))
   implementation(project(":msp-util"))

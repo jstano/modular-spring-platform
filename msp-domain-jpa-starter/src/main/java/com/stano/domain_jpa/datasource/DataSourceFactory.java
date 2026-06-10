@@ -1,9 +1,12 @@
 package com.stano.domain_jpa.datasource;
 
+import com.stano.exceptions.RuntimeSQLException;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public final class DataSourceFactory {
   public static DataSource createDataSource(Environment environment,
@@ -21,6 +24,17 @@ public final class DataSourceFactory {
     dataSource.setMaxLifetime(environment.getProperty("spring.datasource.hikari.max-lifetime", Long.class, 1800000L));
 
     return dataSource;
+  }
+
+  public static ConnectionDataSource createConnectionDataSource(String jdbcUrl,
+                                                                 String username,
+                                                                 String password) {
+    try {
+      return new ConnectionDataSource(DriverManager.getConnection(jdbcUrl, username, password));
+    }
+    catch (SQLException x) {
+      throw new RuntimeSQLException(x);
+    }
   }
 
   private DataSourceFactory() {
