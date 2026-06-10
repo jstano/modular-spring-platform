@@ -1,4 +1,4 @@
-package com.stano.domain_jpa.springdata.jpa;
+package com.stano.domain_jpa.jpa.hibernate;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.event.service.spi.EventListenerRegistry;

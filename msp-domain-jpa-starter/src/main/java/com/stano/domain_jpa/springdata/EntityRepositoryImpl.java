@@ -1,16 +1,17 @@
-package com.stano.domain_jpa.springdata.repository;
+package com.stano.domain_jpa.springdata;
 
 import com.stano.domain_jpa.entity.AbstractEntity;
 import com.stano.domain_jpa.id.EntityId;
 import com.stano.domain_jpa.repository.EntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 public class EntityRepositoryImpl<T extends AbstractEntity<ID>, ID extends EntityId>
     extends SimpleJpaRepository<T, UUID>

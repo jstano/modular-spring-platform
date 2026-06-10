@@ -1,4 +1,4 @@
-package com.stano.domain_jpa.springdata.jpa;
+package com.stano.domain_jpa.jpa.hibernate;
 
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;

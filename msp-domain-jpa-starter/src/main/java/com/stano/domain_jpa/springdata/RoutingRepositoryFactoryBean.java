@@ -1,4 +1,4 @@
-package com.stano.domain_jpa.springdata.repository;
+package com.stano.domain_jpa.springdata;
 
 import com.stano.domain_jpa.repository.ReadOnlyRepository;
 import jakarta.persistence.EntityManager;

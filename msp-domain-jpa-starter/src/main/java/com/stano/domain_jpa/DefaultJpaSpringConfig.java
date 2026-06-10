@@ -1,7 +1,8 @@
 package com.stano.domain_jpa;
 
-import com.stano.domain_jpa.springdata.jpa.RequestLoggingStatementInspector;
 import com.stano.domain_jpa.datasource.DataSourceFactory;
+import com.stano.domain_jpa.jpa.hibernate.TraceIdStatementInspector;
+import com.stano.domain_jpa.springdata.RoutingRepositoryFactoryBean;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl;
 import org.hibernate.event.service.spi.EventListenerRegistry;
@@ -14,15 +15,14 @@ import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import com.stano.domain_jpa.springdata.repository.RoutingRepositoryFactoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -162,7 +162,7 @@ public class DefaultJpaSpringConfig implements ImportAware {
                    environment.getProperty("spring.jpa.properties.hibernate.jdbc.time_zone", "UTC"));
     properties.put("hibernate.session_factory.statement_inspector",
                    environment.getProperty("spring.jpa.properties.hibernate.session_factory.statement_inspector",
-                                           RequestLoggingStatementInspector.class.getName()));
+                                           TraceIdStatementInspector.class.getName()));
     properties.put("hibernate.show_sql",
                    environment.getProperty("spring.jpa.properties.hibernate.show_sql", boolean.class, false));
     properties.put("hibernate.format_sql",
@@ -177,7 +177,7 @@ public class DefaultJpaSpringConfig implements ImportAware {
 
   private String[] getPackagesToScan() {
     List<String> packages = new ArrayList<>();
-    packages.add("com.stano.domain_jpa.springdata.jpa");
+    packages.add("com.stano.domain_jpa.jpa.converters");
     Class<?>[] entityClasses = getPackagesToScanForEntities();
     if (entityClasses.length > 0) {
       Arrays.stream(entityClasses)

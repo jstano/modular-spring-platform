@@ -1,4 +1,4 @@
-package com.stano.domain_jpa.springdata.jpa;
+package com.stano.domain_jpa.jpa.converters;
 
 import org.junit.jupiter.api.Test;
 

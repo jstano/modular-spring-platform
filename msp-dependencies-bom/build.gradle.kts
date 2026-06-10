@@ -41,6 +41,8 @@ dependencies {
     api("com.cronutils:cron-utils:9.2.1")
     api("io.hypersistence:hypersistence-utils-hibernate-70:3.15.3")
     api("org.apache.tika:tika-core:3.3.1")
+    api("io.opentelemetry.javaagent:opentelemetry-javaagent:2.28.1")
+    api("io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.28.1-alpha")
 
     // apache
     api("commons-beanutils:commons-beanutils:1.11.0")
@@ -88,7 +90,6 @@ dependencies {
     api("au.com.dius.pact.provider:spring:${pactVersion}")
 
     // testing tools
-    api("org.objenesis:objenesis:3.5")
     api("com.github.codemonstur:embedded-redis:1.4.3")
     api("com.icegreen:greenmail:2.1.8")
     api("io.zonky.test:embedded-postgres:2.2.2")
@@ -96,6 +97,7 @@ dependencies {
     api("io.zonky.test:embedded-database-spring-test-autoconfigure:2.8.0")
     api("org.mockftpserver:MockFtpServer:3.2.0")
     api("com.google.truth:truth:1.4.5")
+    api("org.instancio:instancio-junit:5.4.1")
   }
 }
 

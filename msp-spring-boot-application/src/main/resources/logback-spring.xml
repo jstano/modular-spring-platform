@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <springProperty name="appName" source="spring.application.name" defaultValue="app"/>
+  <contextName>${appName}</contextName>
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="JsonConsole" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+  </appender>
+
+  <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender"/>
+
+  <springProfile name="local">
+    <root level="INFO">
+      <appender-ref ref="Console"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="!local">
+    <root level="INFO">
+      <appender-ref ref="JsonConsole"/>
+      <appender-ref ref="OTEL"/>
+    </root>
+  </springProfile>
+</configuration>
