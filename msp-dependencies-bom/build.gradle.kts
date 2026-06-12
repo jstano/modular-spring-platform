@@ -62,6 +62,7 @@ dependencies {
     api("org.apache.poi:ooxml-schemas:1.4")
     api("org.apache.poi:poi-ooxml:5.5.1")
     api("org.apache.poi:poi:5.5.1")
+    api("org.yaml:snakeyaml:2.6")
 
     // logging
     api("net.logstash.logback:logstash-logback-encoder:9.0")
