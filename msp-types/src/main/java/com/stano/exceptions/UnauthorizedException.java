@@ -2,17 +2,15 @@ package com.stano.exceptions;
 
 public class UnauthorizedException extends RuntimeException {
 
-   public UnauthorizedException() {
+  public UnauthorizedException() {}
 
-   }
+  public UnauthorizedException(String message) {
 
-   public UnauthorizedException(String message) {
+    super(message);
+  }
 
-      super(message);
-   }
+  public UnauthorizedException(String message, Throwable cause) {
 
-   public UnauthorizedException(String message, Throwable cause) {
-
-      super(message, cause);
-   }
+    super(message, cause);
+  }
 }

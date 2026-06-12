@@ -22,7 +22,7 @@ public abstract class AbstractEncryptedText implements EncryptedText {
       return false;
     }
 
-    AbstractEncryptedText that = (AbstractEncryptedText)o;
+    AbstractEncryptedText that = (AbstractEncryptedText) o;
 
     return encryptedText.equals(that.encryptedText);
   }

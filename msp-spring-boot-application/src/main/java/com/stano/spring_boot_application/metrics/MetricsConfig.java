@@ -7,6 +7,7 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
+import java.util.Map;
 import org.jolokia.server.core.config.ConfigKey;
 import org.jolokia.server.core.http.AgentServlet;
 import org.slf4j.Logger;
@@ -14,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Map;
 
 @Configuration
 public class MetricsConfig {
@@ -36,11 +35,11 @@ public class MetricsConfig {
 
   @Bean
   public ServletRegistrationBean<AgentServlet> jolokia() {
-    Map<String, String> params = Map.of(
-      ConfigKey.AGENT_DESCRIPTION.getKeyValue(), "Spring Servlet Jolokia Agent"
-    );
+    Map<String, String> params =
+        Map.of(ConfigKey.AGENT_DESCRIPTION.getKeyValue(), "Spring Servlet Jolokia Agent");
 
-    ServletRegistrationBean<AgentServlet> jolokiaServlet = new ServletRegistrationBean<>(new AgentServlet(), "/jolokia/*");
+    ServletRegistrationBean<AgentServlet> jolokiaServlet =
+        new ServletRegistrationBean<>(new AgentServlet(), "/jolokia/*");
     jolokiaServlet.setLoadOnStartup(0);
     jolokiaServlet.setAsyncSupported(true);
     jolokiaServlet.setInitParameters(params);

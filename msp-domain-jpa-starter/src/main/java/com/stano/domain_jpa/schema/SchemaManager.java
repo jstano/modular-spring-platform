@@ -3,18 +3,18 @@ package com.stano.domain_jpa.schema;
 import com.stano.schema.installer.flyway.FlywaySchemaInstaller;
 import com.stano.schema.installer.schemacontext.SchemaContext;
 import com.stano.schema.model.Version;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 public class SchemaManager {
   private static final Logger logger = LoggerFactory.getLogger(SchemaManager.class);
 
-  public void installOrMigrate(DataSource dataSource, SchemaContext schemaContext, boolean autoMigrate) {
+  public void installOrMigrate(
+      DataSource dataSource, SchemaContext schemaContext, boolean autoMigrate) {
     try (Connection connection = dataSource.getConnection()) {
       if (!schemaContext.schemaIsInstalled(connection)) {
         installSchema(dataSource, schemaContext);
@@ -47,8 +47,10 @@ public class SchemaManager {
 
       var migrationLocator = schemaContext.getMigrationScriptLocator(connection);
       if (migrationLocator == null) {
-        logger.warn("Database version {} is behind schema version {}, but no migration scripts found",
-                    databaseVersion, schemaVersion);
+        logger.warn(
+            "Database version {} is behind schema version {}, but no migration scripts found",
+            databaseVersion,
+            schemaVersion);
         return;
       }
 
@@ -62,10 +64,12 @@ public class SchemaManager {
     new FlywaySchemaInstaller().installSchema(dataSource, schemaContext);
   }
 
-  private void migrateIfNeeded(DataSource dataSource,
-                               SchemaContext schemaContext,
-                               Connection connection,
-                               boolean autoMigrate) throws SQLException {
+  private void migrateIfNeeded(
+      DataSource dataSource,
+      SchemaContext schemaContext,
+      Connection connection,
+      boolean autoMigrate)
+      throws SQLException {
     Version databaseVersion = schemaContext.getDatabaseVersion(connection);
     if (databaseVersion == null) {
       return;
@@ -84,20 +88,24 @@ public class SchemaManager {
     if (autoMigrate) {
       executeMigration(dataSource, migrationLocator.getResourcePath());
     } else {
-      logger.warn("Schema migration needed: database version {} is behind schema version {}. " +
-                  "Set spring.jpa.schema.auto-migrate=true to migrate automatically, or run with --migrate flag",
-                  databaseVersion, schemaVersion);
+      logger.warn(
+          "Schema migration needed: database version {} is behind schema version {}. Set"
+              + " spring.jpa.schema.auto-migrate=true to migrate automatically, or run with"
+              + " --migrate flag",
+          databaseVersion,
+          schemaVersion);
     }
   }
 
   private void executeMigration(DataSource dataSource, String migrationResourcePath) {
     logger.info("Running schema migrations from classpath:{}", migrationResourcePath);
-    Flyway flyway = Flyway.configure()
-                          .dataSource(dataSource)
-                          .locations("classpath:" + migrationResourcePath)
-                          .table("flyway_schema_history")
-                          .validateOnMigrate(false)
-                          .load();
+    Flyway flyway =
+        Flyway.configure()
+            .dataSource(dataSource)
+            .locations("classpath:" + migrationResourcePath)
+            .table("flyway_schema_history")
+            .validateOnMigrate(false)
+            .load();
 
     flyway.migrate();
     logger.info("Schema migration completed");

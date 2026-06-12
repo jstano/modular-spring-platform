@@ -20,13 +20,11 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
- * Class that holds a Connection object and delegates all calls to it.
- * If the ownsConnection flag is set then
- * 1) The Connection will be closed when the close method is called.
- * 2) All calls will be forwarded to the Connection
- * If it's not set then
- * 1) The Connection will not be closed, and the close method will do nothing.
- * 2) Calls to various set methods that would modify the state of the Connection, including basic transaction management will be skipped
+ * Class that holds a Connection object and delegates all calls to it. If the ownsConnection flag is
+ * set then 1) The Connection will be closed when the close method is called. 2) All calls will be
+ * forwarded to the Connection If it's not set then 1) The Connection will not be closed, and the
+ * close method will do nothing. 2) Calls to various set methods that would modify the state of the
+ * Connection, including basic transaction management will be skipped
  */
 public class DelegatingConnection implements Connection {
   private final Connection connection;
@@ -151,17 +149,20 @@ public class DelegatingConnection implements Connection {
   }
 
   @Override
-  public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+  public Statement createStatement(int resultSetType, int resultSetConcurrency)
+      throws SQLException {
     return connection.createStatement(resultSetType, resultSetConcurrency);
   }
 
   @Override
-  public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+  public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
+      throws SQLException {
     return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
   }
 
   @Override
-  public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+  public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency)
+      throws SQLException {
     return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
   }
 
@@ -222,17 +223,23 @@ public class DelegatingConnection implements Connection {
   }
 
   @Override
-  public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+  public Statement createStatement(
+      int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
     return connection.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
   }
 
   @Override
-  public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-    return connection.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+  public PreparedStatement prepareStatement(
+      String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+      throws SQLException {
+    return connection.prepareStatement(
+        sql, resultSetType, resultSetConcurrency, resultSetHoldability);
   }
 
   @Override
-  public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+  public CallableStatement prepareCall(
+      String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+      throws SQLException {
     return connection.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
   }
 

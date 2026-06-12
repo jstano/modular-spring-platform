@@ -1,18 +1,18 @@
 package com.stano.domain_jpa.routable_datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-import javax.sql.DataSource;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-
-public class RoutableDataSource extends AbstractRoutingDataSource implements RoutableDataSourceMBean {
+public class RoutableDataSource extends AbstractRoutingDataSource
+    implements RoutableDataSourceMBean {
   private static final Logger LOGGER = LoggerFactory.getLogger(RoutableDataSource.class);
 
   private final RoutableDataSourcesLoader<Long> routableDataSourcesLoader;
@@ -67,21 +67,21 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
   private void mergeDataSources(RoutableDataSources<Long, DataSource> newRoutableDataSources) {
     Set<Long> staleKeys = new HashSet<>(routableDataSources.keySet());
 
-    newRoutableDataSources.forEach((key, newDataSource) -> {
-      staleKeys.remove(key);
+    newRoutableDataSources.forEach(
+        (key, newDataSource) -> {
+          staleKeys.remove(key);
 
-      DataSource currentDataSource = routableDataSources.get(key);
+          DataSource currentDataSource = routableDataSources.get(key);
 
-      if (currentDataSource == null) {
-        LOGGER.info("Adding DataSource with key {}", key);
-        routableDataSources.put(key, newDataSource);
-      }
-      else if (dataSourceHasChanged(currentDataSource, (DataSource)newDataSource)) {
-        LOGGER.info("Replacing DataSource with key {} due to changes", key);
-        routableDataSources.put(key, newDataSource);
-        closeDataSource(currentDataSource);
-      }
-    });
+          if (currentDataSource == null) {
+            LOGGER.info("Adding DataSource with key {}", key);
+            routableDataSources.put(key, newDataSource);
+          } else if (dataSourceHasChanged(currentDataSource, (DataSource) newDataSource)) {
+            LOGGER.info("Replacing DataSource with key {} due to changes", key);
+            routableDataSources.put(key, newDataSource);
+            closeDataSource(currentDataSource);
+          }
+        });
 
     for (Long staleKey : staleKeys) {
       DataSource dataSource = routableDataSources.get(staleKey);
@@ -113,7 +113,7 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
 
   private String getJdbcUrl(DataSource dataSource) {
     if (dataSource instanceof HikariDataSource) {
-      return ((HikariDataSource)dataSource).getJdbcUrl();
+      return ((HikariDataSource) dataSource).getJdbcUrl();
     }
 
     return null;
@@ -121,7 +121,7 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
 
   private String getUsername(DataSource dataSource) {
     if (dataSource instanceof HikariDataSource) {
-      return ((HikariDataSource)dataSource).getUsername();
+      return ((HikariDataSource) dataSource).getUsername();
     }
 
     return null;
@@ -129,7 +129,7 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
 
   private String getPassword(DataSource dataSource) {
     if (dataSource instanceof HikariDataSource) {
-      return ((HikariDataSource)dataSource).getPassword();
+      return ((HikariDataSource) dataSource).getPassword();
     }
 
     return null;
@@ -137,7 +137,7 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
 
   private String getDriver(DataSource dataSource) {
     if (dataSource instanceof HikariDataSource) {
-      return ((HikariDataSource)dataSource).getDriverClassName();
+      return ((HikariDataSource) dataSource).getDriverClassName();
     }
 
     return null;
@@ -146,9 +146,8 @@ public class RoutableDataSource extends AbstractRoutingDataSource implements Rou
   private void closeDataSource(DataSource dataSource) {
     if (dataSource instanceof HikariDataSource) {
       try {
-        ((HikariDataSource)dataSource).close();
-      }
-      catch (Exception ignored) {
+        ((HikariDataSource) dataSource).close();
+      } catch (Exception ignored) {
       }
     }
   }

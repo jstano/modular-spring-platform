@@ -26,6 +26,7 @@ configure(javaProjects()) {
   apply(plugin = "java-library")
   apply(plugin = "maven-publish")
   apply(plugin = "jacoco")
+  apply(plugin = "com.diffplug.spotless")
 
   configurations {
     all {
@@ -72,6 +73,23 @@ configure(javaProjects()) {
   tasks.withType<GenerateModuleMetadata>().configureEach {
     // The value "enforced-platform" is provided in the validation error message you got
     suppressedValidationErrors.add("enforced-platform")
+  }
+
+  configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    java {
+      googleJavaFormat("1.35.0")
+        .reflowLongStrings()
+        .formatJavadoc(true)
+      endWithNewline()
+      expandWildcardImports()
+      importOrder()
+      removeUnusedImports()
+      trimTrailingWhitespace()
+    }
+  }
+
+  tasks.named("check") {
+    dependsOn("spotlessCheck")
   }
 }
 

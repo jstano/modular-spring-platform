@@ -1,14 +1,13 @@
 package com.stano.crypto.utils;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.UnsupportedEncodingException;
 import java.util.function.Function;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * This class is used to encapsulate the base64 encoding/decoding used by the encryption algorithms.
- * The input String is converted into bytes using MESSAGE_CHARSET as a fixed charset to avoid problems
- * with different platforms having different default charsets (see MESSAGE_CHARSET doc).
+ * The input String is converted into bytes using MESSAGE_CHARSET as a fixed charset to avoid
+ * problems with different platforms having different default charsets (see MESSAGE_CHARSET doc).
  */
 public class Base64Utils {
   private static final String MESSAGE_CHARSET = "UTF-8";
@@ -22,19 +21,18 @@ public class Base64Utils {
       final byte[] encryptedMessageBytes = base64.encode(f.apply(messageBytes));
 
       return new String(encryptedMessageBytes, ENCRYPTED_MESSAGE_CHARSET);
-    }
-    catch (UnsupportedEncodingException x) {
+    } catch (UnsupportedEncodingException x) {
       throw new IllegalArgumentException("Failed to encode message", x);
     }
   }
 
   public static String decode(String encryptedMessage, Function<byte[], byte[]> f) {
     try {
-      byte[] encryptedMessageBytes = base64.decode(encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET));
+      byte[] encryptedMessageBytes =
+          base64.decode(encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET));
 
       return new String(f.apply(encryptedMessageBytes), MESSAGE_CHARSET);
-    }
-    catch (UnsupportedEncodingException x) {
+    } catch (UnsupportedEncodingException x) {
       throw new IllegalArgumentException("Failed to decode message", x);
     }
   }

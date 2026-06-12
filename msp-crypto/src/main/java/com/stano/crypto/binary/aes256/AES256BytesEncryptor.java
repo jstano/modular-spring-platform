@@ -17,8 +17,7 @@ public final class AES256BytesEncryptor {
 
     try {
       return encryptor.encrypt(message);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new IllegalArgumentException("Failed to encrypt bytes", e);
     }
   }
@@ -30,13 +29,16 @@ public final class AES256BytesEncryptor {
 
     try {
       return encryptor.decrypt(encryptedMessage);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new IllegalArgumentException("Failed to decrypt bytes", e);
     }
   }
 
   private static AesBytesEncryptor createEncryptor(String password) {
-    return new AesBytesEncryptor(password, "5c0744940b5c369b", KeyGenerators.secureRandom(16), AesBytesEncryptor.CipherAlgorithm.GCM);
+    return new AesBytesEncryptor(
+        password,
+        "5c0744940b5c369b",
+        KeyGenerators.secureRandom(16),
+        AesBytesEncryptor.CipherAlgorithm.GCM);
   }
 }

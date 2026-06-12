@@ -25,6 +25,7 @@ buildscript {
   dependencies {
     classpath("com.stano:gradle-dependency-management:${properties["gradleDependencyManagementVersion"].toString()}")
     classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${properties["sonarPluginVersion"]}")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:${properties["spotlessVersion"]}")
   }
 }
 

@@ -22,7 +22,7 @@ public abstract class AbstractPassword implements Password {
       return false;
     }
 
-    Password that = (Password)o;
+    Password that = (Password) o;
 
     return encryptedPassword.equals(that.getEncryptedPassword());
   }

@@ -7,7 +7,6 @@ import com.stano.domain_jpa.jpa.converters.EncryptedStringConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.DayOfWeek;
@@ -29,14 +28,18 @@ public class TestEntity extends AbstractEntity<TestEntityId> {
   private Locale locale;
   private ZoneId zoneId;
   private URL url;
+
   @Column(precision = 19, scale = 4)
   private BigDecimal decimal;
+
   private boolean active;
   private EncryptedBytes encryptedBytes;
   private EncryptedText encryptedText;
   private Password password;
+
   @Convert(converter = EncryptedStringConverter.class)
   private String encryptedString;
+
   private Currency currency;
 
   public TestEntity() {}

@@ -2,22 +2,20 @@ package com.stano.exceptions;
 
 public class ReflectionException extends RuntimeException {
 
-   public ReflectionException() {
+  public ReflectionException() {}
 
-   }
+  public ReflectionException(String message) {
 
-   public ReflectionException(String message) {
+    super(message);
+  }
 
-      super(message);
-   }
+  public ReflectionException(String message, Throwable cause) {
 
-   public ReflectionException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-      super(message, cause);
-   }
+  public ReflectionException(Throwable cause) {
 
-   public ReflectionException(Throwable cause) {
-
-      super(cause);
-   }
+    super(cause);
+  }
 }

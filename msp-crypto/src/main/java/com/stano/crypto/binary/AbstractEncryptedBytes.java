@@ -22,7 +22,7 @@ public abstract class AbstractEncryptedBytes implements EncryptedBytes {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AbstractEncryptedBytes that = (AbstractEncryptedBytes)o;
+    AbstractEncryptedBytes that = (AbstractEncryptedBytes) o;
     return Arrays.equals(encryptedBytes, that.encryptedBytes);
   }
 

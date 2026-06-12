@@ -10,9 +10,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class ThreadPoolConfig {
   @Bean
   public TaskExecutor taskExecutor(Environment environment) {
-    int corePoolSize = environment.getProperty("app.task-executor.core-pool-size", Integer.class, 4);
+    int corePoolSize =
+        environment.getProperty("app.task-executor.core-pool-size", Integer.class, 4);
     int maxPoolSize = environment.getProperty("app.task-executor.max-pool-size", Integer.class, 10);
-    int queueCapacity = environment.getProperty("app.task-executor.queue-capacity", Integer.class, 1000);
+    int queueCapacity =
+        environment.getProperty("app.task-executor.queue-capacity", Integer.class, 1000);
 
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
     executor.setCorePoolSize(corePoolSize);

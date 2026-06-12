@@ -9,15 +9,11 @@ import jakarta.persistence.Converter;
 public class PasswordAttributeConverter implements AttributeConverter<Password, String> {
   @Override
   public String convertToDatabaseColumn(Password attribute) {
-    return attribute == null
-           ? null
-           : attribute.getEncryptedPassword();
+    return attribute == null ? null : attribute.getEncryptedPassword();
   }
 
   @Override
   public Password convertToEntityAttribute(String dbData) {
-    return dbData == null
-           ? null
-           : PasswordFactory.getInstance().withEncryptedText(dbData);
+    return dbData == null ? null : PasswordFactory.getInstance().withEncryptedText(dbData);
   }
 }

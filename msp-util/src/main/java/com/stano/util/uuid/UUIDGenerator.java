@@ -12,6 +12,5 @@ public final class UUIDGenerator {
     return UuidCreator.getTimeOrderedEpoch();
   }
 
-  private UUIDGenerator() {
-  }
+  private UUIDGenerator() {}
 }

@@ -5,20 +5,18 @@ import com.stano.domain_jpa.id.EntityId;
 import com.stano.domain_jpa.repository.EntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 public class EntityRepositoryImpl<T extends AbstractEntity<ID>, ID extends EntityId>
-    extends SimpleJpaRepository<T, UUID>
-    implements EntityRepository<T, ID> {
+    extends SimpleJpaRepository<T, UUID> implements EntityRepository<T, ID> {
 
-  public EntityRepositoryImpl(JpaEntityInformation<T, UUID> entityInformation,
-      EntityManager entityManager) {
+  public EntityRepositoryImpl(
+      JpaEntityInformation<T, UUID> entityInformation, EntityManager entityManager) {
     super(entityInformation, entityManager);
   }
 
@@ -38,11 +36,6 @@ public class EntityRepositoryImpl<T extends AbstractEntity<ID>, ID extends Entit
   }
 
   @Override
-  public Optional<T> findById(ID id) {
-    return findById(id.value());
-  }
-
-  @Override
   public T get(ID id) {
     return findById(id.value()).orElseThrow(EntityNotFoundException::new);
   }
@@ -53,10 +46,13 @@ public class EntityRepositoryImpl<T extends AbstractEntity<ID>, ID extends Entit
   }
 
   @Override
+  public Optional<T> findById(ID id) {
+    return findById(id.value());
+  }
+
+  @Override
   public List<T> findAll(Iterable<ID> ids) {
-    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false)
-        .map(EntityId::value)
-        .toList();
+    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false).map(EntityId::value).toList();
     return findAllById(uuids);
   }
 
@@ -82,9 +78,7 @@ public class EntityRepositoryImpl<T extends AbstractEntity<ID>, ID extends Entit
 
   @Override
   public void removeAllById(Iterable<ID> ids) {
-    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false)
-        .map(EntityId::value)
-        .toList();
+    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false).map(EntityId::value).toList();
     deleteAllById(uuids);
   }
 }

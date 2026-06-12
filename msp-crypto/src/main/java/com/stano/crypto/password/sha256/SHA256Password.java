@@ -1,10 +1,11 @@
 package com.stano.crypto.password.sha256;
 
-import com.stano.crypto.password.PasswordEncryptionServices;
 import com.stano.crypto.password.AbstractPassword;
+import com.stano.crypto.password.PasswordEncryptionServices;
 
 public final class SHA256Password extends AbstractPassword {
-  private static final PasswordEncryptionServices encryptionServices = new SHA256PasswordEncryptionServices();
+  private static final PasswordEncryptionServices encryptionServices =
+      new SHA256PasswordEncryptionServices();
 
   public SHA256Password(String encryptedPassword) {
     super(encryptedPassword);

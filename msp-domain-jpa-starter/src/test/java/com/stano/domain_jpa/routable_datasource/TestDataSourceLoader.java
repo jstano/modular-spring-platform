@@ -1,11 +1,9 @@
 package com.stano.domain_jpa.routable_datasource;
 
-import com.stano.domain_jpa.routable_datasource.RoutableDataSources;
 import com.zaxxer.hikari.HikariDataSource;
-
-import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.sql.DataSource;
 
 public class TestDataSourceLoader {
   public static RoutableDataSources<Long, DataSource> createDataSources(long... ids) {
@@ -28,6 +26,5 @@ public class TestDataSourceLoader {
     return dataSource;
   }
 
-  private TestDataSourceLoader() {
-  }
+  private TestDataSourceLoader() {}
 }

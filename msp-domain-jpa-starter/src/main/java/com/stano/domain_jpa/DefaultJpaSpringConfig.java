@@ -6,6 +6,11 @@ import com.stano.domain_jpa.schema.SchemaManager;
 import com.stano.domain_jpa.springdata.RoutingRepositoryFactoryBean;
 import com.stano.schema.installer.schemacontext.SchemaContext;
 import jakarta.persistence.EntityManagerFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import javax.sql.DataSource;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -29,12 +34,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(repositoryFactoryBeanClass = RoutingRepositoryFactoryBean.class)
@@ -46,8 +45,8 @@ public class DefaultJpaSpringConfig implements ImportAware {
   @Override
   public void setImportMetadata(AnnotationMetadata metadata) {
     importingClassName = metadata.getClassName();
-    AnnotationAttributes attrs = AnnotationAttributes.fromMap(
-      metadata.getAnnotationAttributes(EnableJpa.class.getName()));
+    AnnotationAttributes attrs =
+        AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(EnableJpa.class.getName()));
     if (attrs != null) {
       entityPackages = attrs.getClassArray("entityPackages");
     }
@@ -58,14 +57,16 @@ public class DefaultJpaSpringConfig implements ImportAware {
   }
 
   @Bean
-  public DataSource dataSource(ApplicationContext applicationContext,
-                               ObjectProvider<SchemaContext> schemaContextProvider) {
+  public DataSource dataSource(
+      ApplicationContext applicationContext, ObjectProvider<SchemaContext> schemaContextProvider) {
     DataSource dataSource = createDataSource(applicationContext);
 
     SchemaContext schemaContext = schemaContextProvider.getIfAvailable();
     if (schemaContext != null) {
-      boolean autoMigrate = applicationContext.getEnvironment()
-          .getProperty("spring.jpa.schema.auto-migrate", Boolean.class, false);
+      boolean autoMigrate =
+          applicationContext
+              .getEnvironment()
+              .getProperty("spring.jpa.schema.auto-migrate", Boolean.class, false);
       new SchemaManager().installOrMigrate(dataSource, schemaContext, autoMigrate);
     }
 
@@ -76,18 +77,19 @@ public class DefaultJpaSpringConfig implements ImportAware {
   }
 
   @Bean
-  public PlatformTransactionManager transactionManager(Environment environment, DataSource dataSource) {
+  public PlatformTransactionManager transactionManager(
+      Environment environment, DataSource dataSource) {
     return createTransactionManager(environment, dataSource);
   }
 
   @Bean
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory(Environment environment,
-                                                                     DataSource dataSource) {
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+      Environment environment, DataSource dataSource) {
     return createEntityManagerFactory(environment, dataSource);
   }
 
   @Bean
-  public JpaVendorAdapter jpaVendorAdapter(Environment environment) {//DataSource dataSource
+  public JpaVendorAdapter jpaVendorAdapter(Environment environment) { // DataSource dataSource
     return configureJpaVendorAdapter(createJpaVendorAdapter(environment));
   }
 
@@ -99,40 +101,41 @@ public class DefaultJpaSpringConfig implements ImportAware {
   @Bean
   public EventListenerRegistry eventListenerRegistry(EntityManagerFactory entityManagerFactory) {
     return entityManagerFactory
-             .unwrap(SessionFactoryImpl.class)
-             .getServiceRegistry()
-             .getService(EventListenerRegistry.class);
+        .unwrap(SessionFactoryImpl.class)
+        .getServiceRegistry()
+        .getService(EventListenerRegistry.class);
   }
 
   protected DataSource createDataSource(ApplicationContext applicationContext) {
     Environment environment = applicationContext.getEnvironment();
-    DataSourceProperties dataSourceProperties = applicationContext.getBean(DataSourceProperties.class);
+    DataSourceProperties dataSourceProperties =
+        applicationContext.getBean(DataSourceProperties.class);
 
-    return DataSourceFactory.createDataSource(environment,
-                                              dataSourceProperties.getUrl(),
-                                              dataSourceProperties.getUsername(),
-                                              dataSourceProperties.getPassword());
+    return DataSourceFactory.createDataSource(
+        environment,
+        dataSourceProperties.getUrl(),
+        dataSourceProperties.getUsername(),
+        dataSourceProperties.getPassword());
   }
 
-  protected void initializeDataSource(DataSource dataSource) {
-  }
+  protected void initializeDataSource(DataSource dataSource) {}
 
-  protected void dataSourceReady(DataSource dataSource) {
-  }
+  protected void dataSourceReady(DataSource dataSource) {}
 
-  protected PlatformTransactionManager createTransactionManager(Environment environment,
-                                                                DataSource dataSource) {
+  protected PlatformTransactionManager createTransactionManager(
+      Environment environment, DataSource dataSource) {
     JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-    jpaTransactionManager.setEntityManagerFactory(entityManagerFactory(environment,
-                                                                       dataSource).getObject());
+    jpaTransactionManager.setEntityManagerFactory(
+        entityManagerFactory(environment, dataSource).getObject());
     jpaTransactionManager.setDataSource(dataSource);
 
     return jpaTransactionManager;
   }
 
-  protected LocalContainerEntityManagerFactoryBean createEntityManagerFactory(Environment environment,
-                                                                              DataSource dataSource) {
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+  protected LocalContainerEntityManagerFactoryBean createEntityManagerFactory(
+      Environment environment, DataSource dataSource) {
+    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+        new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setJpaProperties(getJpaProperties(environment));
     entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter(environment));
     entityManagerFactoryBean.setPackagesToScan(getPackagesToScan());
@@ -146,9 +149,8 @@ public class DefaultJpaSpringConfig implements ImportAware {
     HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
     hibernateJpaVendorAdapter.setDatabase(Database.POSTGRESQL);
     hibernateJpaVendorAdapter.setGenerateDdl(false);
-    hibernateJpaVendorAdapter.setShowSql(environment.getProperty("spring.jpa.properties.hibernate.show_sql",
-                                                                 boolean.class,
-                                                                 false));
+    hibernateJpaVendorAdapter.setShowSql(
+        environment.getProperty("spring.jpa.properties.hibernate.show_sql", boolean.class, false));
 
     return hibernateJpaVendorAdapter;
   }
@@ -160,28 +162,46 @@ public class DefaultJpaSpringConfig implements ImportAware {
   protected Properties getJpaProperties(Environment environment) {
     Properties properties = new Properties();
 
-    properties.put("hibernate.physical_naming_strategy",
-                   environment.getProperty("spring.jpa.hibernate.naming.physical-strategy",
-                                           PhysicalNamingStrategySnakeCaseImpl.class.getName()));
-    properties.put("hibernate.jdbc.batch_size",
-                   environment.getProperty("spring.jpa.properties.hibernate.jdbc.batch_size", Integer.class, 200));
-    properties.put("hibernate.order_inserts",
-                   environment.getProperty("spring.jpa.properties.hibernate.order_inserts", boolean.class, true));
-    properties.put("hibernate.jdbc.lob.non_contextual_creation",
-                   environment.getProperty("spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation", boolean.class, true));
-    properties.put("hibernate.jdbc.time_zone",
-                   environment.getProperty("spring.jpa.properties.hibernate.jdbc.time_zone", "UTC"));
-    properties.put("hibernate.session_factory.statement_inspector",
-                   environment.getProperty("spring.jpa.properties.hibernate.session_factory.statement_inspector",
-                                           TraceIdStatementInspector.class.getName()));
-    properties.put("hibernate.show_sql",
-                   environment.getProperty("spring.jpa.properties.hibernate.show_sql", boolean.class, false));
-    properties.put("hibernate.format_sql",
-                   environment.getProperty("spring.jpa.properties.hibernate.format_sql", boolean.class, false));
-    properties.put("hibernate.hbm2ddl.auto",
-                   environment.getProperty("spring.jpa.hibernate.ddl-auto", "none"));
-    properties.put("hibernate.generate_statistics",
-                   environment.getProperty("spring.jpa.properties.hibernate.generate_statistics", boolean.class, false));
+    properties.put(
+        "hibernate.physical_naming_strategy",
+        environment.getProperty(
+            "spring.jpa.hibernate.naming.physical-strategy",
+            PhysicalNamingStrategySnakeCaseImpl.class.getName()));
+    properties.put(
+        "hibernate.jdbc.batch_size",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.jdbc.batch_size", Integer.class, 200));
+    properties.put(
+        "hibernate.order_inserts",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.order_inserts", boolean.class, true));
+    properties.put(
+        "hibernate.jdbc.lob.non_contextual_creation",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation",
+            boolean.class,
+            true));
+    properties.put(
+        "hibernate.jdbc.time_zone",
+        environment.getProperty("spring.jpa.properties.hibernate.jdbc.time_zone", "UTC"));
+    properties.put(
+        "hibernate.session_factory.statement_inspector",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.session_factory.statement_inspector",
+            TraceIdStatementInspector.class.getName()));
+    properties.put(
+        "hibernate.show_sql",
+        environment.getProperty("spring.jpa.properties.hibernate.show_sql", boolean.class, false));
+    properties.put(
+        "hibernate.format_sql",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.format_sql", boolean.class, false));
+    properties.put(
+        "hibernate.hbm2ddl.auto", environment.getProperty("spring.jpa.hibernate.ddl-auto", "none"));
+    properties.put(
+        "hibernate.generate_statistics",
+        environment.getProperty(
+            "spring.jpa.properties.hibernate.generate_statistics", boolean.class, false));
 
     return properties;
   }
@@ -192,8 +212,8 @@ public class DefaultJpaSpringConfig implements ImportAware {
     Class<?>[] entityClasses = getPackagesToScanForEntities();
     if (entityClasses.length > 0) {
       Arrays.stream(entityClasses)
-            .map(clazz -> clazz.getPackage().getName())
-            .forEach(packages::add);
+          .map(clazz -> clazz.getPackage().getName())
+          .forEach(packages::add);
     } else if (importingClassName != null) {
       int dot = importingClassName.lastIndexOf('.');
       if (dot > 0) {

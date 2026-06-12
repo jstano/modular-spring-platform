@@ -1,15 +1,18 @@
 package com.stano.domain_jpa.schema;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.stano.schema.installer.schemacontext.SchemaContext;
 import com.stano.schema.model.Version;
-import org.junit.jupiter.api.Test;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.Test;
 
 class SchemaManagerTest {
   private final SchemaManager schemaManager = new SchemaManager();
@@ -123,7 +126,7 @@ class SchemaManagerTest {
     SchemaContext schemaContext = mock(SchemaContext.class);
 
     assertThatThrownBy(() -> schemaManager.installOrMigrate(dataSource, schemaContext, false))
-      .isInstanceOf(IllegalStateException.class)
-      .hasCause(sqlException);
+        .isInstanceOf(IllegalStateException.class)
+        .hasCause(sqlException);
   }
 }

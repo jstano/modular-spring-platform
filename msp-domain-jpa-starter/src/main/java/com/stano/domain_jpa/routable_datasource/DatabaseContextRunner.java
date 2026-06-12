@@ -10,12 +10,10 @@ public final class DatabaseContextRunner {
       DatabaseContextHolder.setDatabaseId(databaseId);
 
       return supplier.get();
-    }
-    finally {
+    } finally {
       DatabaseContextHolder.setDatabaseId(oldDatabaseID);
     }
   }
 
-  private DatabaseContextRunner() {
-  }
+  private DatabaseContextRunner() {}
 }

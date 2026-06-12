@@ -1,22 +1,22 @@
 package com.stano.exceptions;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class ResourceConflictExceptionTest {
 
-    @Test
-    void shouldCreateExceptionWithMessageAndGetMessage() {
-        assertThat(new ResourceConflictException("MESSAGE").getMessage()).isEqualTo("MESSAGE");
-    }
+  @Test
+  void shouldCreateExceptionWithMessageAndGetMessage() {
+    assertThat(new ResourceConflictException("MESSAGE").getMessage()).isEqualTo("MESSAGE");
+  }
 
-    @Test
-    void shouldCreateExceptionWithMessageAndNestedExceptionAndGetBoth() {
-        var nestedException = new NullPointerException();
-        var exception = new ResourceConflictException("MESSAGE", nestedException);
+  @Test
+  void shouldCreateExceptionWithMessageAndNestedExceptionAndGetBoth() {
+    var nestedException = new NullPointerException();
+    var exception = new ResourceConflictException("MESSAGE", nestedException);
 
-        assertThat(exception.getMessage()).isEqualTo("MESSAGE");
-        assertThat(exception.getCause()).isEqualTo(nestedException);
-    }
+    assertThat(exception.getMessage()).isEqualTo("MESSAGE");
+    assertThat(exception.getCause()).isEqualTo(nestedException);
+  }
 }

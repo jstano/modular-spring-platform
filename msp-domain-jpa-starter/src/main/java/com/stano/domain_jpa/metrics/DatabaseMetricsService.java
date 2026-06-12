@@ -1,9 +1,8 @@
 package com.stano.domain_jpa.metrics;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseMetricsService {
@@ -15,7 +14,7 @@ public class DatabaseMetricsService {
 
   public ConnectionPoolMetrics getConnectionPoolMetrics() {
     if (this.dataSource instanceof HikariDataSource) {
-      HikariDataSource hikariDataSource = (HikariDataSource)this.dataSource;
+      HikariDataSource hikariDataSource = (HikariDataSource) this.dataSource;
       var poolMx = hikariDataSource.getHikariPoolMXBean();
       int activeConnections = poolMx.getActiveConnections();
       int poolSize = poolMx.getTotalConnections();
@@ -25,7 +24,14 @@ public class DatabaseMetricsService {
       long connectionTimeout = hikariDataSource.getConnectionTimeout();
       long maxLifeTime = hikariDataSource.getMaxLifetime();
 
-      return new ConnectionPoolMetrics(activeConnections, poolSize, maxPoolSize, keepaliveTime, connectionTimeout, maxLifeTime, awaitingConnection);
+      return new ConnectionPoolMetrics(
+          activeConnections,
+          poolSize,
+          maxPoolSize,
+          keepaliveTime,
+          connectionTimeout,
+          maxLifeTime,
+          awaitingConnection);
     }
 
     return new ConnectionPoolMetrics(0, 0, 0, 0L, 0L, 0L, 0);

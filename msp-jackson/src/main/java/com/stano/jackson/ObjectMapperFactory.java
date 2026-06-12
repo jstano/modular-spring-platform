@@ -21,20 +21,21 @@ public final class ObjectMapperFactory {
         .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
         .disable(DateTimeFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
         .disable(DateTimeFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
-        .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
+        .changeDefaultPropertyInclusion(
+            incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
         .constructorDetector(ConstructorDetector.USE_PROPERTIES_BASED);
   }
 
   private static final class Holder {
-    static final ObjectMapper INSTANCE = configure(JsonMapper.builder())
-        .findAndAddModules(ObjectMapperFactory.class.getClassLoader())
-        .build();
+    static final ObjectMapper INSTANCE =
+        configure(JsonMapper.builder())
+            .findAndAddModules(ObjectMapperFactory.class.getClassLoader())
+            .build();
   }
 
   public static ObjectMapper getInstance() {
     return Holder.INSTANCE;
   }
 
-  private ObjectMapperFactory() {
-  }
+  private ObjectMapperFactory() {}
 }

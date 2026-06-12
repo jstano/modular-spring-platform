@@ -4,13 +4,13 @@ import java.sql.SQLException;
 
 public class RuntimeSQLException extends RuntimeException {
 
-   public RuntimeSQLException(SQLException cause) {
+  public RuntimeSQLException(SQLException cause) {
 
-      super(cause);
-   }
+    super(cause);
+  }
 
-   public RuntimeSQLException(Throwable cause) {
+  public RuntimeSQLException(Throwable cause) {
 
-      super(cause);
-   }
+    super(cause);
+  }
 }

@@ -1,7 +1,6 @@
 package com.stano.domain_jpa.entity;
 
 import com.stano.domain_jpa.id.EntityId;
-
 import java.util.UUID;
 
 public class TestEntityId extends EntityId {

@@ -22,11 +22,11 @@ public interface EntityRepository<T extends AbstractEntity<ID>, ID extends Entit
 
   boolean exists(ID id);
 
-  Optional<T> findById(ID id);
-
   T get(ID id);
 
   T getReference(ID id);
+
+  Optional<T> findById(ID id);
 
   List<T> findAll();
 

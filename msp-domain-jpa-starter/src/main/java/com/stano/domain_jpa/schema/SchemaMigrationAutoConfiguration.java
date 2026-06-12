@@ -16,13 +16,13 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 @ConditionalOnClass(SchemaMigrationRequestedEvent.class)
 public class SchemaMigrationAutoConfiguration {
-  private static final Logger logger = LoggerFactory.getLogger(SchemaMigrationAutoConfiguration.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(SchemaMigrationAutoConfiguration.class);
 
   @Bean
   @ConditionalOnBean(SchemaContext.class)
   public ApplicationListener<SchemaMigrationRequestedEvent> schemaMigrationListener(
-      DataSourceProperties dataSourceProperties,
-      SchemaContext schemaContext) {
+      DataSourceProperties dataSourceProperties, SchemaContext schemaContext) {
     return event -> {
       logger.info("Handling schema migration request");
 
@@ -32,11 +32,13 @@ public class SchemaMigrationAutoConfiguration {
 
       if (url == null || username == null || password == null) {
         throw new IllegalStateException(
-            "Schema migration requested but datasource properties not configured. " +
-            "Ensure spring.datasource.url, spring.datasource.username, and spring.datasource.password are set.");
+            "Schema migration requested but datasource properties not configured. Ensure"
+                + " spring.datasource.url, spring.datasource.username, and"
+                + " spring.datasource.password are set.");
       }
 
-      try (ConnectionDataSource dataSource = DataSourceFactory.createConnectionDataSource(url, username, password)) {
+      try (ConnectionDataSource dataSource =
+          DataSourceFactory.createConnectionDataSource(url, username, password)) {
         new SchemaManager().migrate(dataSource, schemaContext);
         event.markHandled();
       } catch (Exception x) {

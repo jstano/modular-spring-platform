@@ -6,23 +6,23 @@ public class Sanitizer {
   private static final String MASK = "******";
 
   // 🔑 Key-based patterns (expanded)
-  private static final Pattern KEY_PATTERN = Pattern.compile(
-    ".*(password|secret|token|key|credential|auth|session|cookie|jwt|signature|private|access|refresh).*",
-    Pattern.CASE_INSENSITIVE
-  );
+  private static final Pattern KEY_PATTERN =
+      Pattern.compile(
+          ".*(password|secret|token|key|credential|auth|session|cookie|jwt|signature|private|access|refresh).*",
+          Pattern.CASE_INSENSITIVE);
 
   // 🔍 Value-based patterns
   private static final Pattern JWT_PATTERN =
-    Pattern.compile("^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$");
+      Pattern.compile("^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$");
 
   private static final Pattern BEARER_PATTERN =
-    Pattern.compile("^Bearer\\s+[A-Za-z0-9-_.]+$", Pattern.CASE_INSENSITIVE);
+      Pattern.compile("^Bearer\\s+[A-Za-z0-9-_.]+$", Pattern.CASE_INSENSITIVE);
 
   private static final Pattern API_KEY_PATTERN =
-    Pattern.compile("^(sk_live_|sk_test_)[A-Za-z0-9]+"); // Stripe-style example
+      Pattern.compile("^(sk_live_|sk_test_)[A-Za-z0-9]+"); // Stripe-style example
 
   private static final Pattern BASE64_LIKE =
-    Pattern.compile("^[A-Za-z0-9+/=]{20,}$"); // long encoded blobs
+      Pattern.compile("^[A-Za-z0-9+/=]{20,}$"); // long encoded blobs
 
   public static Object sanitize(String key, Object value) {
     if (value == null) {
@@ -45,7 +45,9 @@ public class Sanitizer {
     }
 
     // 3. High-entropy fallback (optional heuristic)
-    if (stringValue.length() > 32 && stringValue.matches(".*[A-Za-z].*") && stringValue.matches(".*\\d.*")) {
+    if (stringValue.length() > 32
+        && stringValue.matches(".*[A-Za-z].*")
+        && stringValue.matches(".*\\d.*")) {
       return MASK;
     }
 

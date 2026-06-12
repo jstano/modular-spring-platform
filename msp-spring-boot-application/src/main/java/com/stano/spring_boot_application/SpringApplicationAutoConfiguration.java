@@ -1,6 +1,8 @@
 package com.stano.spring_boot_application;
 
 import jakarta.annotation.PostConstruct;
+import java.time.Duration;
+import java.util.TimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -11,13 +13,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.env.Environment;
 
-import java.time.Duration;
-import java.util.TimeZone;
-
 @AutoConfiguration
 @Configuration
 public class SpringApplicationAutoConfiguration {
-  private static final Logger LOGGER = LoggerFactory.getLogger(SpringApplicationAutoConfiguration.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(SpringApplicationAutoConfiguration.class);
 
   @PostConstruct
   public void init() {
@@ -36,8 +36,12 @@ public class SpringApplicationAutoConfiguration {
       Duration timeTaken = event.getTimeTaken();
 
       LOGGER.info("**************************************************");
-      LOGGER.info(String.format("Application started in %.3f seconds%n", timeTaken.toMillis() / 1000.0));
-      LOGGER.info(String.format("Application is ready on port %d%n", environment.getProperty("local.server.port", Integer.class)));
+      LOGGER.info(
+          String.format("Application started in %.3f seconds%n", timeTaken.toMillis() / 1000.0));
+      LOGGER.info(
+          String.format(
+              "Application is ready on port %d%n",
+              environment.getProperty("local.server.port", Integer.class)));
       LOGGER.info("**************************************************");
     };
   }

@@ -1,8 +1,7 @@
 package com.stano.logging;
 
-import org.slf4j.Logger;
-
 import java.util.Arrays;
+import org.slf4j.Logger;
 
 public class SemanticLogger {
   private final Logger logger;
@@ -31,51 +30,59 @@ public class SemanticLogger {
   }
 
   public void debug(String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.debug(format, arguments);
-    });
+    loggingContext.run(
+        () -> {
+          logger.debug(format, arguments);
+        });
   }
 
   public void debug(Throwable throwable, String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.debug(format, argumentsWithThrowable(arguments, throwable));
-    });
+    loggingContext.run(
+        () -> {
+          logger.debug(format, argumentsWithThrowable(arguments, throwable));
+        });
   }
 
   public void info(String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.info(format, arguments);
-    });
+    loggingContext.run(
+        () -> {
+          logger.info(format, arguments);
+        });
   }
 
   public void info(Throwable throwable, String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.info(format, argumentsWithThrowable(arguments, throwable));
-    });
+    loggingContext.run(
+        () -> {
+          logger.info(format, argumentsWithThrowable(arguments, throwable));
+        });
   }
 
   public void warn(String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.warn(format, arguments);
-    });
+    loggingContext.run(
+        () -> {
+          logger.warn(format, arguments);
+        });
   }
 
   public void warn(Throwable throwable, String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.warn(format, argumentsWithThrowable(arguments, throwable));
-    });
+    loggingContext.run(
+        () -> {
+          logger.warn(format, argumentsWithThrowable(arguments, throwable));
+        });
   }
 
   public void error(String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.error(format, arguments);
-    });
+    loggingContext.run(
+        () -> {
+          logger.error(format, arguments);
+        });
   }
 
   public void error(Throwable throwable, String format, Object... arguments) {
-    loggingContext.run(() -> {
-      logger.error(format, argumentsWithThrowable(arguments, throwable));
-    });
+    loggingContext.run(
+        () -> {
+          logger.error(format, argumentsWithThrowable(arguments, throwable));
+        });
   }
 
   private Object[] argumentsWithThrowable(Object[] arguments, Throwable throwable) {

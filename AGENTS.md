@@ -1,4 +1,4 @@
-# AGENTS.md
+[# AGENTS.md
 
 ## Git Rules
 
@@ -91,3 +91,4 @@ Enforced by `.editorconfig`:
 - **Method naming:** Long descriptive camelCase sentences (e.g., `convertingAnObjectToAJsonStringAndThenBackToAnObjectShouldWork`)
 - **Assertions:** Primary library is AssertJ (`assertThat(...).isEqualTo(...)`)
 - **Test frameworks:** JUnit 5 + Mockito are default
+]()

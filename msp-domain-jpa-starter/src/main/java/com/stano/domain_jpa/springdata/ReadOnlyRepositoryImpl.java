@@ -5,20 +5,18 @@ import com.stano.domain_jpa.id.EntityId;
 import com.stano.domain_jpa.repository.ReadOnlyRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 public class ReadOnlyRepositoryImpl<T extends AbstractEntity<ID>, ID extends EntityId>
-    extends SimpleJpaRepository<T, UUID>
-    implements ReadOnlyRepository<T, ID> {
+    extends SimpleJpaRepository<T, UUID> implements ReadOnlyRepository<T, ID> {
 
-  public ReadOnlyRepositoryImpl(JpaEntityInformation<T, UUID> entityInformation,
-      EntityManager entityManager) {
+  public ReadOnlyRepositoryImpl(
+      JpaEntityInformation<T, UUID> entityInformation, EntityManager entityManager) {
     super(entityInformation, entityManager);
   }
 
@@ -44,9 +42,7 @@ public class ReadOnlyRepositoryImpl<T extends AbstractEntity<ID>, ID extends Ent
 
   @Override
   public List<T> findAll(Iterable<ID> ids) {
-    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false)
-        .map(EntityId::value)
-        .toList();
+    List<UUID> uuids = StreamSupport.stream(ids.spliterator(), false).map(EntityId::value).toList();
     return findAllById(uuids);
   }
 }

@@ -43,6 +43,9 @@ dependencies {
     api("org.apache.tika:tika-core:3.3.1")
     api("io.opentelemetry.javaagent:opentelemetry-javaagent:2.28.1")
     api("io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.28.1-alpha")
+    api("org.mapstruct:mapstruct:1.6.3")
+    api("org.mapstruct:mapstruct-processor:1.6.3")
+    api("org.jetbrains:annotations:13.0")
 
     // apache
     api("commons-beanutils:commons-beanutils:1.11.0")

@@ -1,5 +1,7 @@
 package com.stano.domain_jpa.entity;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.stano.domain_jpa.EntityInstancio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,16 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DataJpaTest
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
 class DomainJpaTest {
-  @Autowired
-  private TestEntityRepository repository;
+  @Autowired private TestEntityRepository repository;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Test
   void entityCanBePersistedAndReadBack() {

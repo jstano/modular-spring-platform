@@ -7,7 +7,8 @@ import com.stano.crypto.password.PasswordFactory;
 public final class SHA256PasswordFactory implements PasswordFactory {
   @Override
   public Password withClearText(String clearText) {
-    return new SHA256Password(PasswordEncryptionServicesFactory.getInstance().encryptPassword(clearText));
+    return new SHA256Password(
+        PasswordEncryptionServicesFactory.getInstance().encryptPassword(clearText));
   }
 
   @Override

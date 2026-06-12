@@ -1,11 +1,11 @@
 package com.stano.domain_jpa.schema;
 
-import com.stano.schema.installer.schemacontext.SchemaContext;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+
+import com.stano.schema.installer.schemacontext.SchemaContext;
+import org.junit.jupiter.api.Test;
 
 class SchemaMigrationLauncherTest {
 
@@ -24,7 +24,8 @@ class SchemaMigrationLauncherTest {
     String[] args = null;
     SchemaContext schemaContext = mock(SchemaContext.class);
 
-    boolean result = SchemaMigrationLauncher.handleArgs(args == null ? new String[0] : args, schemaContext);
+    boolean result =
+        SchemaMigrationLauncher.handleArgs(args == null ? new String[0] : args, schemaContext);
 
     assertThat(result).isFalse();
   }
@@ -35,8 +36,8 @@ class SchemaMigrationLauncherTest {
     SchemaContext schemaContext = mock(SchemaContext.class);
 
     assertThatThrownBy(() -> SchemaMigrationLauncher.handleArgs(args, schemaContext))
-      .isInstanceOf(IllegalStateException.class)
-      .hasMessageContaining("required datasource properties not found");
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("required datasource properties not found");
   }
 
   @Test
@@ -48,8 +49,8 @@ class SchemaMigrationLauncherTest {
 
     try {
       assertThatThrownBy(() -> SchemaMigrationLauncher.handleArgs(args, schemaContext))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("required datasource properties not found");
+          .isInstanceOf(IllegalStateException.class)
+          .hasMessageContaining("required datasource properties not found");
     } finally {
       System.clearProperty("SPRING_DATASOURCE_URL");
     }

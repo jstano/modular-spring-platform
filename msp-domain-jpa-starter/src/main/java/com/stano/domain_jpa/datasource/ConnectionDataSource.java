@@ -1,17 +1,17 @@
 package com.stano.domain_jpa.datasource;
 
-import org.apache.commons.io.output.NullWriter;
-
-import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
+import org.apache.commons.io.output.NullWriter;
 
 /**
- * DataSource implementation that holds a Connection object. This is useful when a DataSource is needed, i.e. in the JdbcTemplate constructor
- * but when you don't want to use a real DataSource, but simply wrap a DataSource around a Connection object.
+ * DataSource implementation that holds a Connection object. This is useful when a DataSource is
+ * needed, i.e. in the JdbcTemplate constructor but when you don't want to use a real DataSource,
+ * but simply wrap a DataSource around a Connection object.
  */
 public class ConnectionDataSource implements DataSource, AutoCloseable {
   private final Connection connection;
@@ -58,8 +58,7 @@ public class ConnectionDataSource implements DataSource, AutoCloseable {
   }
 
   @Override
-  public void setLoginTimeout(int seconds) throws SQLException {
-  }
+  public void setLoginTimeout(int seconds) throws SQLException {}
 
   @Override
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {

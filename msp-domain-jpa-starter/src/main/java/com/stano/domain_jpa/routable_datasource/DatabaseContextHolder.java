@@ -17,6 +17,5 @@ public final class DatabaseContextHolder {
     contextHolder.remove();
   }
 
-  private DatabaseContextHolder() {
-  }
+  private DatabaseContextHolder() {}
 }
