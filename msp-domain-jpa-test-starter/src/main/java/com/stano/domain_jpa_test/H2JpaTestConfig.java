@@ -1,5 +1,6 @@
-package com.stano.domain_jpa;
+package com.stano.domain_jpa_test;
 
+import com.stano.domain_jpa.EnableJpa;
 import javax.sql.DataSource;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;

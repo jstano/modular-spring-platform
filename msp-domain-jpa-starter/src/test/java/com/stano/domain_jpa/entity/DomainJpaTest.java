@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 @DataJpaTest
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
 class DomainJpaTest {
-  @Autowired private TestEntityRepository repository;
+  @Autowired private DomainTestEntityRepository repository;
 
   @PersistenceContext private EntityManager entityManager;
 

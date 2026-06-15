@@ -2,6 +2,7 @@ package com.stano.domain_jpa.schema;
 
 import com.stano.domain_jpa.datasource.ConnectionDataSource;
 import com.stano.domain_jpa.datasource.DataSourceFactory;
+import com.stano.schema.installer.flyway.FlywaySchemaInstaller;
 import com.stano.schema.installer.schemacontext.SchemaContext;
 import java.util.Arrays;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class SchemaMigrationLauncher {
 
     try (ConnectionDataSource dataSource =
         DataSourceFactory.createConnectionDataSource(url, username, password)) {
-      new SchemaManager().migrate(dataSource, schemaContext);
+      new FlywaySchemaInstaller().migrateSchema(dataSource, schemaContext);
       logger.info("Schema migration completed successfully");
       return true;
     } catch (Exception x) {

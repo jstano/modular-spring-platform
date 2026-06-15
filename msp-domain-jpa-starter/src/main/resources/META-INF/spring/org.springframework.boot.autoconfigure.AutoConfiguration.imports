@@ -1,1 +1,3 @@
+com.stano.domain_jpa.datasource.JpaDataSourceAutoConfiguration
+com.stano.domain_jpa.jpa.hibernate.EventListenerAutoConfiguration
 com.stano.domain_jpa.schema.SchemaMigrationAutoConfiguration
