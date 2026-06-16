@@ -65,6 +65,7 @@ The platform is organized as a multi-module Gradle project. Each module owns a s
 ### Language
 - All implementation is Java 21. Do not add Kotlin source files.
 - Gradle build scripts are Kotlin DSL (`build.gradle.kts`, `settings.gradle.kts`).
+- Spring Boot 4.0.6
 
 ### Package Naming
 Use `com.stano.<module_domain>` where compound names use underscores, not dots.

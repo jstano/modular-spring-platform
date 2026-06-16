@@ -1,2 +1,5 @@
 com.stano.spring_boot_application.SpringApplicationAutoConfiguration
-com.stano.spring_boot_application.JacksonConfiguration
+com.stano.spring_boot_application.error.GlobalExceptionHandlerAutoConfiguration
+com.stano.spring_boot_application.jackson.JacksonConfiguration
+com.stano.spring_boot_application.security.DefaultSpringSecurityConfig
+com.stano.spring_boot_application.threadpool.ThreadPoolConfig

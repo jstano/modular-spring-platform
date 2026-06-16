@@ -1,0 +1,29 @@
+spring:
+  mvc:
+    problemdetails:
+      enabled: true
+  threads:
+    virtual:
+      enabled: true
+
+management:
+  endpoints:
+    access:
+      default: none
+      max-permitted: read-only
+    web:
+      base-path: /
+      path-mapping:
+        prometheus: metrics
+      exposure:
+        include: health, prometheus, info
+  endpoint:
+    health:
+      access: read-only
+      show-details: never
+      probes:
+        enabled: true
+    prometheus:
+      access: read-only
+    info:
+      access: read-only

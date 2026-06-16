@@ -1,0 +1,2 @@
+org.springframework.boot.EnvironmentPostProcessor=\
+com.stano.spring_boot_application.config.DefaultPropertiesEnvironmentPostProcessor

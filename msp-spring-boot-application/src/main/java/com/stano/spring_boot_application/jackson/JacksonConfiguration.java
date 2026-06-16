@@ -1,4 +1,4 @@
-package com.stano.spring_boot_application;
+package com.stano.spring_boot_application.jackson;
 
 import com.stano.jackson.ObjectMapperFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

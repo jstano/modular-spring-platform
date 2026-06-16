@@ -1,12 +1,12 @@
 package com.stano.spring_boot_application.threadpool;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@Configuration
+@AutoConfiguration
 public class ThreadPoolConfig {
   @Bean
   public TaskExecutor taskExecutor(Environment environment) {

@@ -9,12 +9,10 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.env.Environment;
 
 @AutoConfiguration
-@Configuration
 public class SpringApplicationAutoConfiguration {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SpringApplicationAutoConfiguration.class);
@@ -35,14 +33,15 @@ public class SpringApplicationAutoConfiguration {
       Environment environment = event.getApplicationContext().getEnvironment();
       Duration timeTaken = event.getTimeTaken();
 
-      LOGGER.info("**************************************************");
       LOGGER.info(
-          String.format("Application started in %.3f seconds%n", timeTaken.toMillis() / 1000.0));
-      LOGGER.info(
-          String.format(
-              "Application is ready on port %d%n",
-              environment.getProperty("local.server.port", Integer.class)));
-      LOGGER.info("**************************************************");
+          """
+          **************************************************
+          Application started in {} seconds
+          Application is ready on port {}
+          **************************************************\
+          """,
+          String.format("%.3f", timeTaken.toMillis() / 1000.0),
+          environment.getProperty("local.server.port", Integer.class));
     };
   }
 }
