@@ -38,7 +38,7 @@ public class JpaDataSourceAutoConfiguration {
   @ConditionalOnResource(resources = "classpath:${msp.jpa.schema.location:schema.xml}")
   public SchemaContext schemaContext(
       @Value("${msp.jpa.schema.location:schema.xml}") String schemaLocation,
-      @Value("${msp.jpa.schema.migration-path:db/migrations}") String migrationPath) {
+      @Value("${msp.jpa.schema.migration-path:db/migration}") String migrationPath) {
     return new DefaultSchemaContext(
         JpaDataSourceAutoConfiguration.class.getClassLoader().getResource(schemaLocation),
         migrationPath);

@@ -21,6 +21,7 @@ dependencies {
   api("org.flywaydb:flyway-core")
 
   implementation(project(":msp-jackson"))
+  implementation(project(":msp-logging"))
   implementation(project(":msp-util"))
 
   implementation("com.zaxxer:HikariCP")

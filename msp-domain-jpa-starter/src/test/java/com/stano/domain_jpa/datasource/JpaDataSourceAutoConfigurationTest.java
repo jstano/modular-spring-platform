@@ -14,7 +14,6 @@ import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 class JpaDataSourceAutoConfigurationTest {
-
   private final ApplicationContextRunner contextRunner =
       new ApplicationContextRunner()
           .withConfiguration(AutoConfigurations.of(JpaDataSourceAutoConfiguration.class));
@@ -41,6 +40,8 @@ class JpaDataSourceAutoConfigurationTest {
   void dataSourceBeanIsCreatedUsingBoundProperties() throws SQLException {
     var schemaContext = mock(SchemaContext.class);
     when(schemaContext.schemaIsInstalled(org.mockito.ArgumentMatchers.any())).thenReturn(true);
+    when(schemaContext.getMigrationScriptLocator(org.mockito.ArgumentMatchers.any()))
+        .thenReturn("classpath:db/migration/empty");
 
     contextRunner
         .withBean(SchemaContext.class, () -> schemaContext)
