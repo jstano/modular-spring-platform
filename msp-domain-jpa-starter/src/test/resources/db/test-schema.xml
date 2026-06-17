@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database xmlns="http://stano.com/database"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://stano.com/database https://raw.githubusercontent.com/jstano/java-schema/refs/heads/main/schema-model/src/resources/schema.xsd">
+  <table name="test_entity">
+    <columns>
+      <column name="id" type="uuid" required="false"/>
+      <column name="name" type="text" required="false"/>
+      <column name="birth_date" type="date" required="false"/>
+      <column name="birth_date_time" type="timestamp" required="false"/>
+      <column name="birth_time" type="time" required="false"/>
+      <column name="birth_day_of_week" type="text" required="false"/>
+      <column name="locale" type="text" required="false"/>
+      <column name="zone_id" type="text" required="false"/>
+      <column name="url" type="text" required="false"/>
+      <column name="decimal" type="decimal" length="19" scale="4" required="false"/>
+      <column name="active" type="boolean" required="false"/>
+      <column name="encrypted_bytes" type="binary" required="false"/>
+      <column name="encrypted_text" type="text" required="false"/>
+      <column name="password" type="text" required="false"/>
+      <column name="encrypted_string" type="text" required="false"/>
+      <column name="currency" type="text" required="false"/>
+      <column name="created_at" type="timestamptz" required="false"/>
+      <column name="updated_at" type="timestamptz" required="false"/>
+      <column name="version" type="int" required="false"/>
+    </columns>
+    <keys>
+      <primary>
+        <column name="id"/>
+      </primary>
+    </keys>
+  </table>
+  <table name="another_test_entity">
+    <columns>
+      <column name="id" type="uuid" required="false"/>
+      <column name="created_at" type="timestamptz" required="false"/>
+      <column name="updated_at" type="timestamptz" required="false"/>
+      <column name="version" type="int" required="false"/>
+    </columns>
+    <keys>
+      <primary>
+        <column name="id"/>
+      </primary>
+    </keys>
+  </table>
+</database>

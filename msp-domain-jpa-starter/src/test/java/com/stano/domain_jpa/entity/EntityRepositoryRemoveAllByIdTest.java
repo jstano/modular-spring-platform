@@ -2,13 +2,13 @@ package com.stano.domain_jpa.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.stano.domain_jpa.JpaTest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.context.annotation.Import;
 
 /**
  * Regression test for a Spring Data JPA 4 query-derivation bug.
@@ -26,8 +26,8 @@ import org.springframework.test.context.TestPropertySource;
  *
  * <p>This test will FAIL at context startup (not inside the test body) until the fix is applied.
  */
-@DataJpaTest
-@TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
+@JpaTest
+@Import(JpaTestSchemaConfig.class)
 class EntityRepositoryRemoveAllByIdTest {
 
   @Autowired private DomainTestEntityRepository repository;

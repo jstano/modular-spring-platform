@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest
-@TestPropertySource(properties = "msp.schema.auto-install=true")
+@SpringBootTest(classes = TestConfig.class)
+@TestPropertySource(
+    properties = {
+      "msp.schema.auto-install=true",
+      "spring.main.allow-bean-definition-overriding=true"
+    })
 @Transactional
 class SchemaInstallAndMigrateIntegrationTest {
   @Autowired private TestEntityRepository repository;
