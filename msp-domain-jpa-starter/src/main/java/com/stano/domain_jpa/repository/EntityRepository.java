@@ -9,12 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
 
 @NoRepositoryBean
 public interface EntityRepository<T extends AbstractEntity<ID>, ID extends EntityId>
-    extends Repository<T, UUID> {
+    extends JpaRepository<T, UUID>, JpaSpecificationExecutor<T> {
 
   <S extends T> void add(S entity);
 

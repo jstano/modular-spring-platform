@@ -4,6 +4,7 @@ import com.stano.schema.installer.schemacontext.DefaultSchemaContext;
 
 class TestSchemaContext extends DefaultSchemaContext {
   TestSchemaContext() {
-    super(TestSchemaContext.class.getClassLoader().getResource("schema.xml"), "db/migration/test");
+    super(
+        TestSchemaContext.class.getClassLoader().getResource("db/schema.xml"), "db/migration/test");
   }
 }

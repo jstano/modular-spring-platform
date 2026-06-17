@@ -12,7 +12,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = PostgresIntegrationTestConfig.class)
-@TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
+@TestPropertySource(
+    properties = {
+      "spring.main.allow-bean-definition-overriding=true",
+      "msp.schema.auto-install=true"
+    })
 @Transactional
 class PostgresIntegrationTest {
   @Autowired private TestEntityRepository repository;

@@ -2,15 +2,18 @@ package com.stano.domain_jpa.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.stano.domain_jpa.DefaultJpaSpringConfig;
 import com.stano.domain_jpa.EntityInstancio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 @DataJpaTest
+@Import(DefaultJpaSpringConfig.class)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
 class DomainJpaTest {
   @Autowired private DomainTestEntityRepository repository;

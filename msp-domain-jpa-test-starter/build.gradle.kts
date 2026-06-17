@@ -1,5 +1,6 @@
 dependencies {
   api(project(":msp-domain-jpa-starter"))
+  api(project(":msp-schema-starter"))
   api(project(":msp-spring-test-starter"))
 
   api("org.springframework.boot:spring-boot-starter-data-jpa-test")

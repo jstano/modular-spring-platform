@@ -1,13 +1,10 @@
 package com.stano.domain_jpa.datasource;
 
-import com.stano.domain_jpa.schema.SchemaManager;
-import com.stano.schema.installer.schemacontext.DefaultSchemaContext;
-import com.stano.schema.installer.schemacontext.SchemaContext;
+import com.stano.data_source.DataSourceFactory;
+import com.stano.schema.SchemaManager;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
@@ -31,16 +28,5 @@ public class JpaDataSourceAutoConfiguration {
             dataSourceProperties.getPassword());
     SchemaManager.migrate(applicationContext, dataSource);
     return dataSource;
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(SchemaContext.class)
-  @ConditionalOnResource(resources = "classpath:${msp.jpa.schema.location:schema.xml}")
-  public SchemaContext schemaContext(
-      @Value("${msp.jpa.schema.location:schema.xml}") String schemaLocation,
-      @Value("${msp.jpa.schema.migration-path:db/migration}") String migrationPath) {
-    return new DefaultSchemaContext(
-        JpaDataSourceAutoConfiguration.class.getClassLoader().getResource(schemaLocation),
-        migrationPath);
   }
 }

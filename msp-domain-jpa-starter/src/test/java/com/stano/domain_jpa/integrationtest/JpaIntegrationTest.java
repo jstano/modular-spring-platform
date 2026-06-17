@@ -10,7 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = TestConfig.class)
-@TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
+@TestPropertySource(
+    properties = {
+      "spring.main.allow-bean-definition-overriding=true",
+      "msp.schema.auto-install=true"
+    })
 @Transactional
 class JpaIntegrationTest {
   @Autowired private TestEntityRepository repository;
