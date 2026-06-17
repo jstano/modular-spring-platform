@@ -1,7 +1,7 @@
 package com.stano.domain_jpa;
 
+import com.stano.domain_jpa.datasource.SchemaManager;
 import com.stano.exceptions.RuntimeSQLException;
-import com.stano.schema.SchemaManager;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 import java.io.IOException;
 import java.sql.SQLException;

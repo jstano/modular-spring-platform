@@ -2,7 +2,6 @@ dependencies {
   api(project(":msp-crypto"))
   api(project(":msp-types"))
   api(project(":msp-data-source-starter"))
-  api(project(":msp-schema-starter"))
 
   compileOnly(project(":msp-spring-boot-application"))
 

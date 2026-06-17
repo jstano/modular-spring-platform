@@ -1,7 +1,6 @@
 package com.stano.domain_jpa.datasource;
 
 import com.stano.data_source.DataSourceFactory;
-import com.stano.schema.SchemaManager;
 import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
