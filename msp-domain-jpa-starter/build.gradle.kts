@@ -1,6 +1,6 @@
 dependencies {
+  api(project(":msp-common"))
   api(project(":msp-crypto"))
-  api(project(":msp-types"))
   api(project(":msp-data-source-starter"))
 
   compileOnly(project(":msp-spring-boot-application"))
@@ -23,8 +23,6 @@ dependencies {
 
   implementation(project(":msp-jackson"))
   implementation(project(":msp-logging"))
-  implementation(project(":msp-util"))
-
   implementation("io.micrometer:micrometer-registry-prometheus")
   implementation("org.glassfish.expressly:expressly")
   implementation("org.hibernate.orm:hibernate-micrometer")

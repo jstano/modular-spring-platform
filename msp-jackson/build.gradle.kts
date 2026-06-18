@@ -4,7 +4,7 @@ dependencies {
   api("tools.jackson.core:jackson-databind")
   api("tools.jackson.dataformat:jackson-dataformat-xml")
 
-  api(project(":msp-types"))
+  api(project(":msp-common"))
 
   testImplementation(project(":msp-test-starter"))
 }

@@ -45,9 +45,8 @@ The platform is organized as a multi-module Gradle project. Each module owns a s
 | `msp-spring-security-starter` | Spring Security starter (core, OAuth2). |
 | `msp-spring-security-test-starter` | Security test starter; adds `spring-security-test` for secured-endpoint testing. |
 | `msp-spring-test-starter` | Spring-aware test support (boot-test, security-test, kotest-extensions-spring). |
+| `msp-common` | Foundational types and utilities with no Spring dependency: exception hierarchy, `@Generated` annotation, UUID generation, Apache Commons, jOOR, Moneta money. |
 | `msp-test-starter` | Base test library: JUnit 5, Mockito, AssertJ, Kotest, Google Truth. |
-| `msp-types` | Core utility types and libraries (Apache Commons, jOOR reflection, Moneta money, JSR-354). No Spring dependency. |
-| `msp-util` | General-purpose utilities (Apache Commons, jOOR, Moneta money). |
 
 ---
 

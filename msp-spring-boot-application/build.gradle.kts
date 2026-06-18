@@ -4,7 +4,7 @@ dependencies {
   api(project(":msp-jackson"))
   api(project(":msp-logging"))
   api(project(":msp-spring-security-starter"))
-  api(project(":msp-types"))
+  api(project(":msp-common"))
 
   implementation("jakarta.persistence:jakarta.persistence-api")
   implementation("org.springframework:spring-orm")

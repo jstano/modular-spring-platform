@@ -1,6 +1,6 @@
 dependencies {
   api(project(":msp-data-source-starter"))
-  api(project(":msp-types"))
+  api(project(":msp-common"))
 
   api("com.stano:schema-installer-flyway")
 

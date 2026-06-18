@@ -1,5 +1,5 @@
 dependencies {
-  api(project(":msp-types"))
+  api(project(":msp-common"))
 
   api("com.zaxxer:HikariCP")
   api("org.postgresql:postgresql")
