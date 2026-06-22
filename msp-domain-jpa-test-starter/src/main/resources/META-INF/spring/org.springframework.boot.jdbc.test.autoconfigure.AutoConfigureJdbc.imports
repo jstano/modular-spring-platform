@@ -1,1 +1,2 @@
 com.stano.domain_jpa.PostgresJpaTestConfig
+com.stano.schema.MigrationAutoConfiguration

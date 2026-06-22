@@ -43,6 +43,18 @@ class SchemaManagerTest {
   }
 
   @Test
+  void doesNotMigrateAfterInstall() throws Exception {
+    var dataSource = newPostgresDataSource();
+    var schemaContext = new TestSchemaContext();
+
+    SchemaManager.installOrMigrate(dataSource, schemaContext);
+
+    // migrations should NOT have been applied — install and migrate are mutually exclusive
+    assertThat(new FlywaySchemaInstaller().getPendingMigrations(dataSource, schemaContext))
+        .isNotEmpty();
+  }
+
+  @Test
   void migratesWhenSchemaAlreadyInstalled() throws Exception {
     var dataSource = newPostgresDataSource();
     var schemaContext = new TestSchemaContext();
