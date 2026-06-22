@@ -74,4 +74,15 @@ public class SchemaManager {
       throw new RuntimeSQLException(x);
     }
   }
+
+  public static void installSchema(DataSource dataSource, SchemaContext schemaContext) {
+    try (Connection connection = dataSource.getConnection()) {
+      FlywaySchemaInstaller installer = new FlywaySchemaInstaller();
+      if (!schemaContext.schemaIsInstalled(connection)) {
+        installer.installSchema(dataSource, schemaContext);
+      }
+    } catch (SQLException x) {
+      throw new RuntimeSQLException(x);
+    }
+  }
 }

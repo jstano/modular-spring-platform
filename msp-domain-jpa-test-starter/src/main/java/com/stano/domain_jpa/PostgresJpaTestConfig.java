@@ -27,7 +27,7 @@ public class PostgresJpaTestConfig {
       DataSource dataSource = embeddedPostgres.getDatabase("postgres", "test");
       var schemaContext = applicationContext.getBeanProvider(SchemaContext.class).getIfAvailable();
       if (schemaContext != null) {
-        SchemaManager.installOrMigrate(dataSource, schemaContext, true, true, false);
+        SchemaManager.installSchema(dataSource, schemaContext);
       }
       return dataSource;
     } catch (IOException | SQLException x) {
