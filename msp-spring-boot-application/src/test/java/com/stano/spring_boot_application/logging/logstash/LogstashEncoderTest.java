@@ -2,7 +2,6 @@ package com.stano.spring_boot_application.logging.logstash;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.qos.logback.classic.LoggerContext;
 import com.stano.logging.SemanticLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -11,7 +10,6 @@ import java.net.UnknownHostException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class LogstashEncoderTest {
@@ -21,27 +19,12 @@ class LogstashEncoderTest {
 
   @BeforeEach
   void setup() throws UnknownHostException {
-    initializeLoggingContext();
     LoggerFactory.getLogger(LogstashEncoderTest.class);
 
     saveSystemOut = System.out;
 
     out = new ByteArrayOutputStream();
     System.setOut(new PrintStream(out));
-  }
-
-  private void initializeLoggingContext() {
-    Logger logger = LoggerFactory.getLogger(LogstashEncoderTest.class);
-    if (logger instanceof ch.qos.logback.classic.Logger) {
-      LoggerContext loggerContext = ((ch.qos.logback.classic.Logger) logger).getLoggerContext();
-      if (loggerContext != null && loggerContext.getProperty("HOSTNAME") == null) {
-        try {
-          loggerContext.putProperty("HOSTNAME", InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException x) {
-          loggerContext.putProperty("HOSTNAME", "UNKNOWN_HOST");
-        }
-      }
-    }
   }
 
   @AfterEach
@@ -69,7 +52,7 @@ class LogstashEncoderTest {
     assertThat(jsonOutput).contains("\"level\":\"INFO\"");
     assertThat(jsonOutput).contains("\"level_value\":20000");
     assertThat(jsonOutput)
-        .contains("\"HOSTNAME\":\"" + InetAddress.getLocalHost().getHostName() + "\"");
+        .contains("\"HOSTNAME\":\"" + InetAddress.getLocalHost().getCanonicalHostName() + "\"");
     assertThat(jsonOutput).contains("\"correlationId\":\"ABC123\"");
     assertThat(jsonOutput).contains("\"sessionId\":\"XYZ456\"");
   }
@@ -91,6 +74,6 @@ class LogstashEncoderTest {
     assertThat(jsonOutput).contains("\"level\":\"INFO\"");
     assertThat(jsonOutput).contains("\"level_value\":20000");
     assertThat(jsonOutput)
-        .contains("\"HOSTNAME\":\"" + InetAddress.getLocalHost().getHostName() + "\"");
+        .contains("\"HOSTNAME\":\"" + InetAddress.getLocalHost().getCanonicalHostName() + "\"");
   }
 }

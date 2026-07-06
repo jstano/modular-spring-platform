@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
+   <define name="HOSTNAME" class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner" scope="context"/>
+
    <appender name="CONSOLE_LOGSTASH" class="ch.qos.logback.core.ConsoleAppender">
       <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
    </appender>

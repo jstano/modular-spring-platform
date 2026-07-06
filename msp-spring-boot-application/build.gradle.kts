@@ -13,7 +13,6 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
   implementation("io.micrometer:micrometer-registry-prometheus")
-  implementation("io.opentelemetry.javaagent:opentelemetry-javaagent")
   implementation("io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0")
 
   testImplementation(project(":msp-spring-test-starter"))

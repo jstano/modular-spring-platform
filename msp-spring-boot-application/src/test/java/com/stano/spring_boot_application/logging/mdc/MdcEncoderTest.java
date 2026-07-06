@@ -2,7 +2,6 @@ package com.stano.spring_boot_application.logging.mdc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.qos.logback.classic.LoggerContext;
 import com.stano.logging.SemanticLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -11,7 +10,6 @@ import java.net.UnknownHostException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class MdcEncoderTest {
@@ -21,27 +19,12 @@ class MdcEncoderTest {
 
   @BeforeEach
   void setup() throws UnknownHostException {
-    initializeLoggingContext();
     LoggerFactory.getLogger(MdcEncoderTest.class);
 
     saveSystemOut = System.out;
 
     out = new ByteArrayOutputStream();
     System.setOut(new PrintStream(out));
-  }
-
-  private void initializeLoggingContext() {
-    Logger logger = LoggerFactory.getLogger(MdcEncoderTest.class);
-    if (logger instanceof ch.qos.logback.classic.Logger) {
-      LoggerContext loggerContext = ((ch.qos.logback.classic.Logger) logger).getLoggerContext();
-      if (loggerContext != null && loggerContext.getProperty("HOSTNAME") == null) {
-        try {
-          loggerContext.putProperty("HOSTNAME", InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException x) {
-          loggerContext.putProperty("HOSTNAME", "UNKNOWN_HOST");
-        }
-      }
-    }
   }
 
   @AfterEach
@@ -52,7 +35,7 @@ class MdcEncoderTest {
   @Test
   void theSemanticLoggerShouldOutputTheAdditionalKeyValuePairs() throws UnknownHostException {
     var logger = LoggerFactory.getLogger(MdcEncoderTest.class);
-    var hostname = InetAddress.getLocalHost().getHostName();
+    var hostname = InetAddress.getLocalHost().getCanonicalHostName();
 
     SemanticLogger.using(logger)
         .with("correlationId", "ABC123")
@@ -70,7 +53,7 @@ class MdcEncoderTest {
   void theStandardLoggerShouldOutputTheMessageWithoutTheAdditionalKeyValuePairs()
       throws UnknownHostException {
     var logger = LoggerFactory.getLogger(MdcEncoderTest.class);
-    var hostname = InetAddress.getLocalHost().getHostName();
+    var hostname = InetAddress.getLocalHost().getCanonicalHostName();
 
     logger.info("This is a test message");
 

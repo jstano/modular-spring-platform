@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <define name="HOSTNAME" class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner" scope="context"/>
+
   <springProperty name="appName" source="spring.application.name" defaultValue="app"/>
   <contextName>${appName}</contextName>
 
