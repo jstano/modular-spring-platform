@@ -31,4 +31,8 @@ dependencies {
   testImplementation(project(":msp-spring-test-starter"))
   testImplementation(project(":msp-domain-jpa-test-starter"))
   testImplementation("com.h2database:h2")
+  testImplementation("org.springframework.boot:spring-boot-micrometer-metrics")
+  testImplementation("org.springframework.boot:spring-boot-starter-actuator")
+  testImplementation("org.springframework.boot:spring-boot-starter-tomcat")
+  testImplementation("org.springframework.boot:spring-boot-webmvc")
 }

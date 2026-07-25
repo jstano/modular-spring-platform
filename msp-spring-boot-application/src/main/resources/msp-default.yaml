@@ -5,6 +5,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
 
 management:
   endpoints:

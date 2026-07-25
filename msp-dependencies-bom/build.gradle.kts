@@ -16,6 +16,9 @@ dependencies {
   api(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:18.4.0"))
   api(platform("com.stano:schema-bom:0.51.0-SNAPSHOT"))
   api(platform("org.javamoney:moneta:1.4.5"))
+  // Keep aligned with opentelemetry-javaagent/opentelemetry-logback-appender-1.0 below;
+  // bump all three together to avoid classpath/API mismatches.
+  api(platform("io.opentelemetry:opentelemetry-bom:1.63.0"))
 
   constraints {
     // stano
