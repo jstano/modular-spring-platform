@@ -1,6 +1,9 @@
+import com.stano.gradle.mavencentralpublish.MavenCentralPublishExtension
+
 plugins {
   id("java-platform")
   `maven-publish`
+  id("com.stano.maven-central-publish")
 }
 
 javaPlatform {
@@ -20,10 +23,17 @@ dependencies {
   }
 }
 
-publishing {
-  publications {
-    create<MavenPublication>("maven") {
-      from(components["javaPlatform"])
-    }
-  }
+extensions.configure<MavenCentralPublishExtension> {
+  componentName = "javaPlatform"
+  pomName = "MSP BOM"
+  pomDescription = "Maven BOM for the modular-spring-platform project."
+  pomUrl = "https://github.com/jstano/modular-spring-platform"
+  licenseName = "Apache License, Version 2.0"
+  licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0"
+  developerId = "jstano"
+  developerName = "Jeff Stano"
+  developerEmail = "jeff@stano.com"
+  scmConnection = "scm:git:https://github.com/jstano/modular-spring-platform.git"
+  scmDeveloperConnection = "scm:git:ssh://git@github.com:jstano/modular-spring-platform.git"
+  scmUrl = "https://github.com/jstano/modular-spring-platform"
 }

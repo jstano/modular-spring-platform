@@ -12,28 +12,15 @@ An opinionated Spring Boot platform library that standardizes cross-cutting conc
 
 ### 1. Configure the Maven Repository
 
-Add the private Stano Maven repository to `settings.gradle.kts`:
+The platform is published to Maven Central, so no extra repository configuration is needed beyond the default:
 
 ```kotlin
 dependencyResolutionManagement {
   repositories {
     mavenCentral()
-    maven {
-      name = "stano-maven"
-      url = uri(System.getenv("STANO_MAVEN_URL"))
-      credentials {
-        username = System.getenv("STANO_MAVEN_USERNAME")
-        password = System.getenv("STANO_MAVEN_PASSWORD")
-      }
-    }
   }
 }
 ```
-
-Set the environment variables:
-- `STANO_MAVEN_URL` — Maven repository URL
-- `STANO_MAVEN_USERNAME` — Authentication username
-- `STANO_MAVEN_PASSWORD` — Authentication password
 
 ### 2. Import the BOM
 
@@ -41,7 +28,7 @@ Add the aggregator BOM to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-  implementation(enforcedPlatform("com.stano:msp-bom:1.0.0-SNAPSHOT"))
+  implementation(enforcedPlatform("com.stano:msp-bom:0.1.0"))
   
   // Now add individual starters (no version needed):
   implementation("com.stano:msp-spring-boot-application")
@@ -243,16 +230,23 @@ After running `./gradlew test` or `./gradlew check`, JaCoCo HTML coverage report
 
 ## Publishing
 
-Publish all modules to the Stano Maven repository:
+Each module applies the `com.stano.maven-central-publish` Gradle plugin, which configures POM metadata, GPG signing, javadoc/sources jars, and a `publishToMavenCentral` task that uploads directly to the Maven Central Portal's publisher API.
 
-```bash
-STANO_MAVEN_URL=https://... \
-STANO_MAVEN_USERNAME=... \
-STANO_MAVEN_PASSWORD=... \
-./gradlew publish
+Before publishing, configure a Central Portal user token in `~/.gradle/gradle.properties`:
+
+```properties
+com.stano.maven.central.token=your-central-portal-token
 ```
 
-The version is hardcoded as `1.0.0-SNAPSHOT` in `settings.gradle.kts`.
+(or set the `MAVEN_TOKEN` environment variable instead). GPG signing credentials (`signing.keyId`, `signing.password`, `signing.secretKeyRingFile`, or the in-memory equivalents) must also be configured locally.
+
+Publish all modules in one command — running the task from the root fans out to every subproject that has it:
+
+```bash
+./gradlew publishToMavenCentral
+```
+
+The version is set in `gradle.properties` (`version=0.1.0`). Maven Central does not accept `-SNAPSHOT` versions via this flow, so bump it to a real release version before publishing.
 
 ## Module Dependency Graph
 

@@ -1,35 +1,15 @@
-import com.stano.gradle_dependency_management.MavenRepositoryUtil
-
 rootProject.name = "modular-spring-platform"
 
-buildscript {
-  val properties = getExtensions().extraProperties.properties
-  val stanoMavenUrl = properties["com.stano.maven.url"]?.toString() ?: System.getenv("STANO_MAVEN_URL")
-  val stanoMavenUsername = properties["com.stano.maven.username"]?.toString() ?: System.getenv("STANO_MAVEN_USERNAME")
-  val stanoMavenPassword = properties["com.stano.maven.password"]?.toString() ?: System.getenv("STANO_MAVEN_PASSWORD")
-
+pluginManagement {
   repositories {
     mavenLocal()
-    mavenCentral()
     gradlePluginPortal()
-    maven {
-      name = "stano-maven"
-      url = uri(stanoMavenUrl)
-      credentials {
-        username = stanoMavenUsername
-        password = stanoMavenPassword
-      }
-    }
-  }
-
-  dependencies {
-    classpath("com.stano:gradle-dependency-management:${properties["gradleDependencyManagementVersion"].toString()}")
-    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${properties["sonarPluginVersion"]}")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:${properties["spotlessVersion"]}")
   }
 }
 
-MavenRepositoryUtil.configureDependencyResolutionManagement(extensions, dependencyResolutionManagement)
+plugins {
+  id("com.stano.settings") version "0.1.8-SNAPSHOT"
+}
 
 include("msp-application-services-starter")
 include("msp-bom")
