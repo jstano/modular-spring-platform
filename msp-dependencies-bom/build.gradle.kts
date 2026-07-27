@@ -17,7 +17,7 @@ dependencies {
   api(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
   api(platform("io.kotest:kotest-bom:6.1.11"))
   api(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:18.4.0"))
-  api(platform("com.stano:schema-bom:0.51.0-SNAPSHOT"))
+  api(platform("com.stano:schema-bom:0.53.0"))
   api(platform("org.javamoney:moneta:1.4.5"))
   // Keep aligned with opentelemetry-javaagent/opentelemetry-logback-appender-1.0 below;
   // bump all three together to avoid classpath/API mismatches.
