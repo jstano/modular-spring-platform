@@ -8,7 +8,7 @@ pluginManagement {
 }
 
 plugins {
-  id("com.stano.settings") version "0.1.8-SNAPSHOT"
+  id("com.stano.settings") version "0.1.8"
 }
 
 include("msp-application-services-starter")
