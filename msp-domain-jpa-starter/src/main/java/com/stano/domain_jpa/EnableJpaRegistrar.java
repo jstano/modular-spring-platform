@@ -10,7 +10,22 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 
+/**
+ * Registers the packages to scan for JPA entities when a class is annotated with {@link EnableJpa}.
+ *
+ * <p>Always includes the package containing the platform's JPA attribute converters, plus either
+ * the packages of the classes listed in {@link EnableJpa#entityPackages()}, or, if none are given,
+ * the package of the annotated class itself.
+ */
 class EnableJpaRegistrar implements ImportBeanDefinitionRegistrar {
+  /**
+   * Computes the entity-scan packages implied by the {@link EnableJpa} annotation on the importing
+   * class and registers them with Spring's {@link
+   * org.springframework.boot.persistence.autoconfigure.EntityScanPackages}.
+   *
+   * @param metadata annotation metadata of the class that declared {@code @EnableJpa}
+   * @param registry the bean definition registry to register the scan packages with
+   */
   @Override
   public void registerBeanDefinitions(
       AnnotationMetadata metadata, BeanDefinitionRegistry registry) {

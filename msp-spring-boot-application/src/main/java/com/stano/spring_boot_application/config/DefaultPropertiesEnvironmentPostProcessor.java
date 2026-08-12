@@ -20,6 +20,15 @@ public class DefaultPropertiesEnvironmentPostProcessor implements EnvironmentPos
 
   private static final String RESOURCE_LOCATION = "msp-default.yaml";
 
+  /**
+   * Loads {@code msp-default.yaml} from the classpath, if present, and appends its properties as
+   * the lowest-priority property source in the environment. Does nothing if the resource is not
+   * found.
+   *
+   * @param environment the environment being prepared for the application
+   * @param application the application being run, unused
+   * @throws IllegalStateException if the resource exists but cannot be loaded
+   */
   @Override
   public void postProcessEnvironment(
       ConfigurableEnvironment environment, SpringApplication application) {

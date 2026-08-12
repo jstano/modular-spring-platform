@@ -33,13 +33,15 @@ The platform is organized as a multi-module Gradle project. Each module owns a s
 | `msp-application-services-starter` | Service layer starter with Spring Context and transaction support for service-layer beans. |
 | `msp-bom` | Aggregator BOM re-exported to consumers. Add new `msp-*` modules as constraints here. |
 | `msp-crypto` | AES-256 encryption, SHA-256 hashing, Base64 utilities. |
+| `msp-data-source-starter` | Multi-tenant `RoutableDataSource`, `DatabaseContextHolder`/`DatabaseContextRunner`, plain `DataSource` creation. |
 | `msp-dependencies-bom` | Root BOM; pins all third-party versions via `spring-boot-dependencies:4.0.6`. **Never add code here.** |
-| `msp-domain-jpa-starter` | JPA/Hibernate with multi-tenant `RoutableDataSource`, Envers audit, custom PostgreSQL dialect. |
+| `msp-domain-jpa-starter` | JPA/Hibernate integration: `@EnableJpa`, `AbstractEntity`/typed ids, routing-aware repositories, encrypted-field converters. Multi-tenant routing itself lives in `msp-data-source-starter`. |
 | `msp-domain-jpa-test-starter` | JPA integration test support with embedded PostgreSQL. |
 | `msp-jackson` | Jackson `ObjectMapperFactory` singleton and `JSON` utility class. |
 | `msp-logging` | Structured logging (`SemanticLogger`, `LoggingContext`, Logback/JSON output). |
 | `msp-rest-api-starter` | Spring MVC REST starter: web and Springdoc OpenAPI UI. |
 | `msp-rest-api-test-starter` | REST API test starter; composes `msp-rest-api-starter` and `msp-spring-test-starter` for controller-layer tests. |
+| `msp-schema-starter` | Schema/migration bootstrapping (`SchemaManager`, `MigrationAutoConfiguration`) run before JPA starts. |
 | `msp-spring-boot-application` | Spring Boot bootstrap: UTC timezone, startup logging, auto-configuration, OpenAPI, Prometheus metrics. |
 | `msp-spring-boot-gradle-plugin` | Bundles `spring-boot-gradle-plugin` and `spring-boot-devtools`. |
 | `msp-spring-security-starter` | Spring Security starter (core, OAuth2). |

@@ -9,15 +9,32 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+/**
+ * Default {@link RoutableDataSourcesLoader} implementation that reads tenant database connection
+ * configuration from a {@code data_source} table, keyed by {@code long} identifiers, and builds a
+ * pooled {@link DataSource} for each row.
+ */
 public class DefaultRoutableDataSourceLoader implements RoutableDataSourcesLoader<Long> {
   private final Environment environment;
   private final JdbcTemplate jdbcTemplate;
 
+  /**
+   * Creates a loader that queries the given JDBC template for data source configuration.
+   *
+   * @param environment the Spring environment used to configure created data sources
+   * @param jdbcTemplate the template used to query the {@code data_source} table
+   */
   public DefaultRoutableDataSourceLoader(Environment environment, JdbcTemplate jdbcTemplate) {
     this.environment = environment;
     this.jdbcTemplate = jdbcTemplate;
   }
 
+  /**
+   * Queries the {@code data_source} table and builds a pooled {@link DataSource} for each
+   * configured row, keyed by its identifier.
+   *
+   * @return the loaded data sources, keyed by database identifier
+   */
   @Override
   public RoutableDataSources<Long, DataSource> loadDataSources() {
     return new RoutableDataSources<>(

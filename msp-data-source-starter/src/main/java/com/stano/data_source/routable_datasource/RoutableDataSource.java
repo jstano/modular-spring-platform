@@ -11,6 +11,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+/**
+ * Multi-tenant {@link DataSource} that routes each call to the underlying data source matching the
+ * identifier currently held in {@link DatabaseContextHolder}.
+ *
+ * <p>If no identifier is set for the current thread, calls fall back to an arbitrary configured
+ * data source. If the current identifier is not (yet) known, the underlying data sources are
+ * reloaded via the configured {@link RoutableDataSourcesLoader} before the lookup is retried, so
+ * newly registered tenants become routable without a restart. {@link #refresh()} can also be called
+ * explicitly (e.g. from a JMX console, since this class implements {@link RoutableDataSourceMBean})
+ * to force a reload.
+ */
 public class RoutableDataSource extends AbstractRoutingDataSource
     implements RoutableDataSourceMBean {
   private static final Logger LOGGER = LoggerFactory.getLogger(RoutableDataSource.class);
@@ -19,6 +30,11 @@ public class RoutableDataSource extends AbstractRoutingDataSource
   private final RoutableDataSources<Long, DataSource> routableDataSources;
   private final Map<Object, Object> targetDataSourcesMap = new LinkedHashMap<>();
 
+  /**
+   * Creates a routable data source, eagerly loading the initial set of target data sources.
+   *
+   * @param routableDataSourcesLoader the loader used to (re)load target data sources
+   */
   public RoutableDataSource(RoutableDataSourcesLoader<Long> routableDataSourcesLoader) {
     this.routableDataSourcesLoader = routableDataSourcesLoader;
     this.routableDataSources = routableDataSourcesLoader.loadDataSources();
@@ -28,6 +44,13 @@ public class RoutableDataSource extends AbstractRoutingDataSource
     afterPropertiesSet();
   }
 
+  /**
+   * Determines the routing key for the current call, based on the identifier held in {@link
+   * DatabaseContextHolder} for the current thread.
+   *
+   * @return the current database identifier, or an arbitrary known key if none is set for this
+   *     thread
+   */
   @Override
   protected Long determineCurrentLookupKey() {
     Long databaseId = DatabaseContextHolder.getDatabaseId();
@@ -39,6 +62,12 @@ public class RoutableDataSource extends AbstractRoutingDataSource
     return routableDataSources.keySet().iterator().next();
   }
 
+  /**
+   * Resolves the target data source for the current lookup key, reloading the known data sources
+   * first if the key is not currently recognized.
+   *
+   * @return the target data source for the current lookup key
+   */
   @Override
   protected DataSource determineTargetDataSource() {
     Long lookupKey = determineCurrentLookupKey();
@@ -52,11 +81,20 @@ public class RoutableDataSource extends AbstractRoutingDataSource
     return super.determineTargetDataSource();
   }
 
+  /**
+   * Returns the number of currently registered target data sources.
+   *
+   * @return the number of target data sources
+   */
   @Override
   public int getNumberOfDataSources() {
     return routableDataSources.size();
   }
 
+  /**
+   * Forces a reload of the target data sources from the configured {@link
+   * RoutableDataSourcesLoader}, adding, replacing, or removing entries as needed.
+   */
   @Override
   public void refresh() {
     synchronized (this) {
@@ -64,6 +102,13 @@ public class RoutableDataSource extends AbstractRoutingDataSource
     }
   }
 
+  /**
+   * Merges a freshly loaded set of data sources into the currently registered ones: new keys are
+   * added, changed data sources are replaced (closing the old one), and keys no longer present are
+   * removed (closing their data source).
+   *
+   * @param newRoutableDataSources the freshly loaded data sources to merge in
+   */
   private void mergeDataSources(RoutableDataSources<Long, DataSource> newRoutableDataSources) {
     Set<Long> staleKeys = new HashSet<>(routableDataSources.keySet());
 

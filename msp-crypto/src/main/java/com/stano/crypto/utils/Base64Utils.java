@@ -15,6 +15,15 @@ public class Base64Utils {
 
   private static final Base64 base64 = new Base64(Integer.MAX_VALUE, new byte[0], true);
 
+  /**
+   * Encodes a message by applying the given transform (typically an encryption function) to its
+   * UTF-8 bytes and Base64-encoding the result.
+   *
+   * @param message the plain-text message to encode
+   * @param f the transform applied to the message's UTF-8 bytes before Base64 encoding
+   * @return the Base64-encoded, transformed message
+   * @throws IllegalArgumentException if the message cannot be encoded
+   */
   public static String encode(String message, Function<byte[], byte[]> f) {
     try {
       final byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
@@ -26,6 +35,15 @@ public class Base64Utils {
     }
   }
 
+  /**
+   * Decodes a Base64-encoded message and applies the given transform (typically a decryption
+   * function) to the decoded bytes, returning the result as a UTF-8 string.
+   *
+   * @param encryptedMessage the Base64-encoded message to decode
+   * @param f the transform applied to the Base64-decoded bytes
+   * @return the transformed, decoded message
+   * @throws IllegalArgumentException if the message cannot be decoded
+   */
   public static String decode(String encryptedMessage, Function<byte[], byte[]> f) {
     try {
       byte[] encryptedMessageBytes =

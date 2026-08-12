@@ -8,6 +8,14 @@ import java.lang.annotation.Target;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
+/**
+ * Meta-annotation for JPA slice tests: composes {@code @DataJpaTest} with
+ * {@code @AutoConfigureTestDatabase(replace = Replace.NONE)} so the module's own test datasource
+ * configuration (see {@link PostgresJpaTestConfig}) is used instead of Spring Boot's default
+ * embedded H2 replacement.
+ *
+ * <p>Named {@code @JpaTest} rather than {@code @EnableJpaTest} per project convention.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

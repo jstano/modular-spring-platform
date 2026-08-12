@@ -11,10 +11,30 @@ import javax.sql.DataSource;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * Installs or migrates the database schema on application startup, using an optional {@code
+ * SchemaContext} bean supplied by the consuming application together with the {@code
+ * msp.schema.auto-install}, {@code msp.schema.auto-migrate}, and {@code
+ * msp.schema.skip-migration-check} configuration properties to decide what to do.
+ *
+ * <p>If no {@code SchemaContext} bean is available in the application context, schema management is
+ * skipped entirely.
+ */
 public class SchemaManager {
   private static final SemanticLogger logger =
       SemanticLogger.using(LoggerFactory.getLogger(SchemaManager.class));
 
+  /**
+   * Looks up an optional {@link SchemaContext} bean in the given application context and, if
+   * present, installs or migrates the schema on {@code dataSource} according to the {@code
+   * msp.schema.auto-install}, {@code msp.schema.auto-migrate}, and {@code
+   * msp.schema.skip-migration-check} properties. Does nothing if no {@code SchemaContext} bean is
+   * available.
+   *
+   * @param applicationContext the application context to look up the schema context and
+   *     configuration properties from
+   * @param dataSource the data source to install or migrate the schema on
+   */
   public static void migrate(ApplicationContext applicationContext, DataSource dataSource) {
     var schemaContext = applicationContext.getBeanProvider(SchemaContext.class).getIfAvailable();
 
@@ -35,6 +55,25 @@ public class SchemaManager {
     }
   }
 
+  /**
+   * Installs, migrates, or verifies the schema on {@code dataSource} depending on its current state
+   * and the given flags: installs the schema if it is missing and {@code autoInstall} is set;
+   * migrates it if already installed and {@code autoMigrate} is set; otherwise checks for pending
+   * migrations unless {@code skipMigrationCheck} is set.
+   *
+   * @param dataSource the data source to install or migrate the schema on
+   * @param schemaContext describes the schema to install/migrate and how to check its state
+   * @param autoInstall whether to automatically install the schema when it is not yet installed
+   * @param autoMigrate whether to automatically run pending migrations when the schema is already
+   *     installed
+   * @param skipMigrationCheck whether to skip failing startup when pending migrations exist and
+   *     {@code autoMigrate} is not set
+   * @throws IllegalStateException if the schema is not installed and {@code autoInstall} is not
+   *     set, or if pending migrations exist and neither {@code autoMigrate} nor {@code
+   *     skipMigrationCheck} is set
+   * @throws RuntimeSQLException if a {@link SQLException} occurs while communicating with the
+   *     database
+   */
   public static void installOrMigrate(
       DataSource dataSource,
       SchemaContext schemaContext,
@@ -75,6 +114,16 @@ public class SchemaManager {
     }
   }
 
+  /**
+   * Installs the schema described by {@code schemaContext} on {@code dataSource} if it is not
+   * already installed. Unlike {@link #installOrMigrate}, this performs the install unconditionally,
+   * without consulting the {@code msp.schema.*} configuration flags.
+   *
+   * @param dataSource the data source to install the schema on
+   * @param schemaContext describes the schema to install and how to check its state
+   * @throws RuntimeSQLException if a {@link SQLException} occurs while communicating with the
+   *     database
+   */
   public static void installSchema(DataSource dataSource, SchemaContext schemaContext) {
     try (Connection connection = dataSource.getConnection()) {
       FlywaySchemaInstaller installer = new FlywaySchemaInstaller();

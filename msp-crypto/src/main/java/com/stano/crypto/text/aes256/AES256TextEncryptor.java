@@ -4,13 +4,33 @@ import java.util.Base64;
 import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 
+/**
+ * Encrypts and decrypts text using AES-256/GCM via Spring Security's {@link AesBytesEncryptor},
+ * exchanging ciphertext as Base64-encoded strings.
+ *
+ * <p>Each instance is keyed by a password supplied at construction time; a random salt is generated
+ * per encryption operation via {@link KeyGenerators#secureRandom(int)}. Plain text is converted
+ * to/from bytes using UTF-8.
+ */
 public final class AES256TextEncryptor {
   private final AesBytesEncryptor encryptor;
 
+  /**
+   * Creates an encryptor keyed with the given password.
+   *
+   * @param password the secret used to derive the encryption key
+   */
   public AES256TextEncryptor(String password) {
     this.encryptor = createEncryptor(password);
   }
 
+  /**
+   * Encrypts the given message and returns the ciphertext as a Base64-encoded string.
+   *
+   * @param message the text to encrypt, or {@code null}
+   * @return the Base64-encoded encrypted text, or {@code null} if {@code message} is {@code null}
+   * @throws IllegalArgumentException if encryption fails
+   */
   public String encrypt(String message) {
     if (message == null) {
       return null;
@@ -25,6 +45,13 @@ public final class AES256TextEncryptor {
     }
   }
 
+  /**
+   * Decrypts a Base64-encoded, previously encrypted message.
+   *
+   * @param encryptedMessage the Base64-encoded ciphertext to decrypt, or {@code null}
+   * @return the decrypted (clear) text, or {@code null} if {@code encryptedMessage} is {@code null}
+   * @throws IllegalArgumentException if decryption fails
+   */
   public String decrypt(String encryptedMessage) {
     if (encryptedMessage == null) {
       return null;

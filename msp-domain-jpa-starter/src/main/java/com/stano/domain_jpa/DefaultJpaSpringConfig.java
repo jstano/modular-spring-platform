@@ -7,10 +7,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Default JPA configuration imported by {@link EnableJpa}: enables Spring Data JPA auditing
+ * (populating {@code @CreatedDate}/{@code @LastModifiedDate} fields) and declarative transaction
+ * management, and supplies platform-wide Hibernate defaults.
+ *
+ * <p>This class is imported automatically via {@code @EnableJpa} and is not normally referenced
+ * directly by application code.
+ */
 @Configuration
 @EnableJpaAuditing
 @EnableTransactionManagement
 public class DefaultJpaSpringConfig {
+  /**
+   * Supplies the platform's default Hibernate properties: UTC session time zone and the {@link
+   * TraceIdStatementInspector} used to tag SQL statements with the current trace id. Existing
+   * properties set elsewhere are left untouched, since only {@code putIfAbsent} is used.
+   *
+   * @return a customizer applying the platform's default Hibernate properties
+   */
   @Bean
   public HibernatePropertiesCustomizer platformHibernateDefaults() {
     return properties -> {

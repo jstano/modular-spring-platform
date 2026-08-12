@@ -27,6 +27,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * {@code @RestControllerAdvice} that maps msp-common's exception hierarchy (and a handful of common
+ * framework exceptions) to RFC 7807 {@link ProblemDetail} HTTP responses.
+ *
+ * <p>Each handler logs the failure via {@link SemanticLogger} with the resolved HTTP status and
+ * request path, and every response is enriched with the request's {@code traceId} (from MDC, if
+ * present) and a {@code timestamp}. Unexpected exceptions are mapped to a generic {@code 500}
+ * response so internal details are never leaked to callers.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   private static final String GENERIC_DETAIL =
@@ -35,21 +44,51 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   private static final SemanticLogger logger =
       SemanticLogger.using(LoggerFactory.getLogger(GlobalExceptionHandler.class));
 
+  /**
+   * Maps {@link BadRequestException} and {@link InvalidRequestException} to a {@code 400 Bad
+   * Request} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the bad request
+   */
   @ExceptionHandler({BadRequestException.class, InvalidRequestException.class})
   public ProblemDetail handleBadRequest(RuntimeException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.BAD_REQUEST, ex, request);
   }
 
+  /**
+   * Maps {@link UnauthorizedException} to a {@code 401 Unauthorized} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the authentication failure
+   */
   @ExceptionHandler(UnauthorizedException.class)
   public ProblemDetail handleUnauthorized(UnauthorizedException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.UNAUTHORIZED, ex, request);
   }
 
+  /**
+   * Maps {@link ForbiddenException} to a {@code 403 Forbidden} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the authorization failure
+   */
   @ExceptionHandler(ForbiddenException.class)
   public ProblemDetail handleForbidden(ForbiddenException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.FORBIDDEN, ex, request);
   }
 
+  /**
+   * Maps {@link ResourceNotFoundException}, {@link EntityNotFoundException}, and {@link
+   * JpaObjectRetrievalFailureException} to a {@code 404 Not Found} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the missing resource
+   */
   @ExceptionHandler({
     ResourceNotFoundException.class,
     EntityNotFoundException.class,
@@ -59,22 +98,54 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleClientError(HttpStatus.NOT_FOUND, ex, request);
   }
 
+  /**
+   * Maps {@link ResourceConflictException} to a {@code 409 Conflict} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the conflict
+   */
   @ExceptionHandler(ResourceConflictException.class)
   public ProblemDetail handleConflict(ResourceConflictException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.CONFLICT, ex, request);
   }
 
+  /**
+   * Maps {@link ResourceLockedException} to a {@code 423 Locked} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the locked resource
+   */
   @ExceptionHandler(ResourceLockedException.class)
   public ProblemDetail handleLocked(ResourceLockedException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.LOCKED, ex, request);
   }
 
+  /**
+   * Maps {@link ServiceUnavailableException} to a {@code 503 Service Unavailable} response.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail describing the unavailable service
+   */
   @ExceptionHandler(ServiceUnavailableException.class)
   public ProblemDetail handleServiceUnavailable(
       ServiceUnavailableException ex, HttpServletRequest request) {
     return handleClientError(HttpStatus.SERVICE_UNAVAILABLE, ex, request);
   }
 
+  /**
+   * Maps {@link ReflectionException}, {@link RuntimeIOException}, {@link
+   * RuntimeMalformedURLException}, {@link RuntimeSQLException}, and {@link InternalServerError} to
+   * a generic {@code 500 Internal Server Error} response, logging the underlying exception at error
+   * level.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail with a generic message; the original exception message is not exposed
+   *     to the caller
+   */
   @ExceptionHandler({
     ReflectionException.class,
     RuntimeIOException.class,
@@ -86,6 +157,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleServerError(ex, request);
   }
 
+  /**
+   * Fallback handler for any exception not covered by a more specific handler. Maps to a generic
+   * {@code 500 Internal Server Error} response, logging the underlying exception at error level.
+   *
+   * @param ex the exception that was thrown
+   * @param request the current request, used for path and trace enrichment
+   * @return a problem detail with a generic message; the original exception message is not exposed
+   *     to the caller
+   */
   @ExceptionHandler(Exception.class)
   public ProblemDetail handleUnexpected(Exception ex, HttpServletRequest request) {
     return handleServerError(ex, request);

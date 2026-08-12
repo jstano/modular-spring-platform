@@ -1,0 +1,22 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Modular Spring Platform",
+  "description": "Opinionated Spring Boot platform library standardizing logging, encryption, JSON, multi-tenant JPA, REST, security, and testing across microservices.",
+  "excludeFolders": [
+    "build",
+    ".gradle",
+    "gradle",
+    ".idea"
+  ],
+  "excludeFiles": [
+    "LICENSE"
+  ],
+  "rules": [
+    "Import versions via the msp-bom platform (enforcedPlatform(\"com.stano:msp-bom:<version>\")); never hardcode individual msp-* module versions.",
+    "Bootstrap Spring Boot applications with MspSpringApplication.run(...), not SpringApplication.run(...).",
+    "Use SemanticLogger and LoggingContext for structured logging instead of raw SLF4J calls.",
+    "Encrypt sensitive fields via the *EncryptionServicesFactory classes in msp-crypto; never hand-roll AES/BCrypt code.",
+    "Set multi-tenant context with DatabaseContextHolder or DatabaseContextRunner (msp-data-source-starter) before issuing JPA queries.",
+    "Never declare third-party dependency versions in consumer build.gradle.kts files; they are pinned centrally by msp-dependencies-bom."
+  ]
+}
